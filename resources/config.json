@@ -1,0 +1,6 @@
+{
+  "mongo_client": {
+    "uri": "mongodb+srv://partyfuhrer:partyfuhrer@cluster0.tt2ct.mongodb.net/partyfuhrer?retryWrites=true&w=majority",
+    "db_name": "partyfuhrer"
+  }
+}
