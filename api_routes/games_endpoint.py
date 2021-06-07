@@ -1,6 +1,6 @@
 import logging
 
-from flask import Blueprint, abort, jsonify
+from flask import Blueprint, jsonify
 from core.persist import games_repository
 
 logger = logging.getLogger(__name__)

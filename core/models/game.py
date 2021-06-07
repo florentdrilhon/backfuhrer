@@ -11,10 +11,9 @@ class GameType(Enum):
     Other = 'other'
 
 
-class Game():
-
+class Game:
     uid: UUID = uuid1()
-    name:str
+    name: str
     description: str
     rules: str
     duration_min: int
@@ -47,9 +46,9 @@ class Game():
         game.name = db_object['name']
         game.description = db_object['description']
         game.rules = db_object['rules']
-        game.duration_min=db_object['duration_min']
+        game.duration_min = db_object['duration_min']
         game.number_of_players = db_object['number_of_players']
-        game.image= db_object['image']
+        game.image = db_object['image']
         game.game_type = db_object['game_type']
         game.created_at = db_object['created_at']
         game.updated_at = db_object['updated_at']
