@@ -10,6 +10,9 @@ class CocktailType(Enum):
     Other = 'other'
 
 
+_COCKTAIL_TYPES = {cocktailtype.value: cocktailtype for cocktailtype in CocktailType}
+
+
 class Cocktail:
     uid: UUID = uuid1()
     name: str
@@ -31,7 +34,7 @@ class Cocktail:
             'ingredients': self.ingredients,
             'preparation_time_min': self.preparation_time_min,
             'image': self.image,
-            'cocktail_type': self.cocktail_type,
+            'cocktail_type': self.cocktail_type.value,
             'created_at': self.created_at,
             'updated_at': self.updated_at
         }
@@ -48,7 +51,7 @@ class Cocktail:
         cocktail.ingredients = db_object['ingredients']
         cocktail.preparation_time_min = db_object['preparation_time_min']
         cocktail.image = db_object['image']
-        cocktail.cocktail_type = db_object['cocktail_type']
+        cocktail.cocktail_type = _COCKTAIL_TYPES[db_object['cocktail_type']]
         cocktail.created_at = db_object['created_at']
         cocktail.updated_at = db_object['updated_at']
         return cocktail
