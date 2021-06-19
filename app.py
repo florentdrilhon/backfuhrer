@@ -18,7 +18,7 @@ def register_routes(app: Flask = app):
 
 @app.route('/', methods=['GET'])
 def hello():
-    res = {'status': "C'est ok mon Daniel"}
+    res = {'status': "C'est ok mon bon Daniel"}
     return jsonify(res)
 
 
