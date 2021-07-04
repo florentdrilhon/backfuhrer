@@ -1,5 +1,5 @@
 from datetime import datetime
-from uuid import uuid1, UUID
+from uuid import uuid4, UUID
 from typing import Optional, Tuple, List, Dict, Any
 from enum import Enum
 
@@ -14,7 +14,7 @@ _COCKTAIL_TYPES = {cocktailtype.value: cocktailtype for cocktailtype in Cocktail
 
 
 class Cocktail:
-    uid: UUID = uuid1()
+    uid: UUID = uuid4()
     name: str
     description: str
     # TODO ingredients as enum if needed

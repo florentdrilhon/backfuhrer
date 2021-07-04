@@ -1,4 +1,5 @@
 from tests.core.persist.utils import new_game
+from core.persist import games_repository
 
 
 def test_serialize():
@@ -15,3 +16,10 @@ def test_serialize():
     assert ser_game['game_type'] == game.game_type.value
     assert ser_game['created_at'] == game.created_at
     assert ser_game['updated_at'] == game.updated_at
+
+
+def test_from_db():
+    game = new_game()
+    games_repository.create_one(game)
+
+
