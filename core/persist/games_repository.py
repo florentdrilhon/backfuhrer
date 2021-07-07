@@ -32,8 +32,8 @@ def find_all_types(types: Optional[List[GameType]] = None) -> List[Game]:
     return res
 
 
-def find_by(uid: UUID) -> Optional[Game]:
-    conditions = {"_id": uid}
+def find_by(_id: str) -> Optional[Game]:
+    conditions = {"_id": _id}
     data = None
     try:
         data = games.find(conditions)
@@ -44,10 +44,10 @@ def find_by(uid: UUID) -> Optional[Game]:
         try:
             res = Game.from_db(data[0])
         except IndexError:
-            logger.warning(f'No game with id: "{uid}" found in db')
+            logger.warning(f'No game with id: "{_id}" found in db')
     return res
 
 
 def create_one(game: Game) -> InsertOneResult:
-    obj = game.serialize()
+    obj = game.to_dict()
     return games.insert_one(obj)
