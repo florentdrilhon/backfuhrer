@@ -52,5 +52,7 @@ class Game(JsonSchemaMixin):
 
     @staticmethod
     def from_db(db_object: dict):
-        # put object in a dict format to insert it in DB
+        """
+        take an object from Mongo DB a arg and return a Game object
+        """
         return Game.from_dict(db_object)
