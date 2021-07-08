@@ -18,6 +18,17 @@ def one_of(lst: Union[List, Set, enum.EnumMeta], excluding: Optional[Union[List,
         return random.choice(lst)
 
 
+def list_of(generator, count: Optional[int] = None, max_count: Optional[int] = 3, min_count: Optional[int] = 1):
+    if not count:
+        count = random.randint(min_count, max(max_count, min_count + 1))
+    if isinstance(generator, enum.EnumMeta):
+        lst = list(generator)
+        k = random_number(min_count, min(count, len(lst)))
+        return random.sample(lst, k)
+    else:
+        return [generator() for _ in range(0, count)]
+
+
 def random_number(a=1, b=2147483647) -> int:
     return random.randint(a, b)
 

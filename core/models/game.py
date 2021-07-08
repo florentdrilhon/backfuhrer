@@ -14,9 +14,6 @@ class GameType(Enum):
     Other = 'other'
 
 
-_GAME_TYPES = {cocktailtype.value: cocktailtype for cocktailtype in GameType}
-
-
 @dataclass
 class Game(JsonSchemaMixin):
     _id: UUID
