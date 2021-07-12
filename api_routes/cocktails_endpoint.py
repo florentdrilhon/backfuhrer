@@ -33,6 +33,6 @@ def test_cocktail():
     if insertion_status.inserted_id is not None:
         res = {'successfully inserted cocktail ': insertion_status.inserted_id}
     else:
-        res = {'error when inserting cocktail': cocktail.uid}
+        res = {'error when inserting cocktail': cocktail._id}
     logger.info(f'Insert status : {insertion_status}')
     return jsonify(res)

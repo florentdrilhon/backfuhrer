@@ -1,6 +1,7 @@
 import logging
 
 from typing import Optional, List
+from uuid import UUID
 
 from pymongo import MongoClient
 from pymongo.results import InsertOneResult
@@ -22,8 +23,8 @@ def find_all_types(types: Optional[List[CocktailType]] = None) -> List[Cocktail]
     data = None
     try:
         data = cocktails.find(conditions)
-    except:
-        logger.error('Error when getting cocktails from DB')
+    except TypeError:
+        logger.error('Error when getting cocktails from DB: type specified are wrong')
     res = []
     if data is not None:
         for obj in data:
@@ -31,6 +32,22 @@ def find_all_types(types: Optional[List[CocktailType]] = None) -> List[Cocktail]
     return res
 
 
+def find_by(_id: UUID) -> Optional[Cocktail]:
+    conditions = {"_id": str(_id)}
+    data = None
+    try:
+        data = cocktails.find(conditions)
+    except TypeError:
+        logger.error('Error when getting games from DB: type specified are wrong')
+    res = None
+    if data is not None:
+        try:
+            res = Cocktail.from_db(data[0])
+        except IndexError:
+            logger.warning(f'No game with id: "{_id}" found in db')
+    return res
+
+
 def create_one(cocktail: Cocktail) -> InsertOneResult:
-    obj = cocktail.serialize()
+    obj = cocktail.to_dict()
     return cocktails.insert_one(obj)

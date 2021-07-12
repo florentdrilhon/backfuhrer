@@ -1,7 +1,10 @@
 from datetime import datetime
-from uuid import uuid1, UUID
-from typing import Optional, Tuple, List, Dict, Any
+from uuid import uuid4, UUID
+from typing import Dict, Optional
 from enum import Enum
+from dataclasses import dataclass
+from dataclasses_jsonschema import JsonSchemaMixin
+from dateutil.tz import tzutc
 
 
 class CocktailType(Enum):
@@ -10,48 +13,42 @@ class CocktailType(Enum):
     Other = 'other'
 
 
-_COCKTAIL_TYPES = {cocktailtype.value: cocktailtype for cocktailtype in CocktailType}
-
-
-class Cocktail:
-    uid: UUID = uuid1()
+@dataclass
+class Cocktail(JsonSchemaMixin):
+    _id: UUID
     name: str
     description: str
-    # TODO ingredients as enum if needed
     ingredients: Dict[str, str]  # name / quantity as a str for now
     preparation_time_min: int
     image: str
-    cocktail_type: CocktailType = CocktailType.Other
-    created_at: datetime = datetime.now()
-    updated_at: datetime = datetime.now()
+    cocktail_type: CocktailType
+    created_at: datetime
+    updated_at: datetime
 
-    # put object in a dict format to insert it in DB
-    def serialize(self) -> Dict[str, Any]:
-        return {
-            '_id': self.uid,
-            'name': self.name,
-            'description': self.description,
-            'ingredients': self.ingredients,
-            'preparation_time_min': self.preparation_time_min,
-            'image': self.image,
-            'cocktail_type': self.cocktail_type.value,
-            'created_at': self.created_at,
-            'updated_at': self.updated_at
-        }
+    def __init__(self,
+                 _id: Optional[UUID] = None,
+                 name: Optional[str] = None,
+                 description: Optional[str] = None,
+                 ingredients: Optional[Dict[str, str]] = None,
+                 preparation_time_min: Optional[int] = None,
+                 image: Optional[str] = None,
+                 cocktail_type: Optional[CocktailType] = None,
+                 created_at: datetime = datetime.now(tz=tzutc()),
+                 updated_at: datetime = datetime.now(tz=tzutc())
+                 ):
+        self._id = _id or uuid4()
+        self.name = name
+        self.description = description
+        self.ingredients = ingredients
+        self.preparation_time_min = preparation_time_min
+        self.image = image
+        self.cocktail_type = cocktail_type
+        self.created_at = created_at
+        self.updated_at = updated_at
 
     @staticmethod
     def from_db(db_object: dict):
         """
         take an object from Mongo DB a arg and return a Cocktail object
         """
-        cocktail = Cocktail()
-        cocktail._id = db_object['_id']
-        cocktail.name = db_object['name']
-        cocktail.description = db_object['description']
-        cocktail.ingredients = db_object['ingredients']
-        cocktail.preparation_time_min = db_object['preparation_time_min']
-        cocktail.image = db_object['image']
-        cocktail.cocktail_type = _COCKTAIL_TYPES[db_object['cocktail_type']]
-        cocktail.created_at = db_object['created_at']
-        cocktail.updated_at = db_object['updated_at']
-        return cocktail
+        return Cocktail.from_dict(db_object)
