@@ -1,10 +1,10 @@
 import logging
 
 from flask import Flask
-from flask import request, jsonify
+from flask import jsonify
 
-from api_routes.cocktails_endpoint import cocktails_blueprint
-from api_routes.games_endpoint import games_blueprint
+from api.routes.cocktails_endpoint import cocktails_blueprint
+from api.routes.games_endpoint import games_blueprint
 
 logger = logging.getLogger(__name__)
 
