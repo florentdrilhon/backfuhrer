@@ -15,7 +15,7 @@ def get_all_cocktails():
     cocktails = cocktails_repository.find_all_types()
     response = []
     for cocktail in cocktails:
-        game_obj = cocktail.serialize()
+        game_obj = cocktail.to_dict()
         response.append(game_obj)
     return jsonify(response)
 
