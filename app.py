@@ -9,10 +9,15 @@ from api.routes.cocktails_endpoint import cocktails_blueprint
 from api.routes.games_endpoint import games_blueprint
 from api.admin_interface.games_admin_endpoint import admin_games_blueprint
 from api.admin_interface.cocktails_admin_endpoint import admin_cocktails_blueprint
+from core.config import config
 
 logger = logging.getLogger(__name__)
 
 app = Flask(__name__, template_folder='api/admin_interface/client/')
+
+app.config['SECRET_KEY'] = config.flask_admin.secret_key
+
+Bootstrap(app)
 
 
 class GameButton(Form):
