@@ -14,8 +14,15 @@ class GameType(Enum):
     Other = 'other'
 
 
-GAME_TYPES = {
-    g.value: g for g in GameType
+GAME_TYPES_NAMES = {
+    GameType.Cards: 'Cartes',
+    GameType.Dice: 'Dés',
+    GameType.MobileApplication: 'Application mobile',
+    GameType.Other: 'Autre'
+}
+
+GAME_NAMES_TYPES = {
+    name: game_type for game_type, name in GAME_TYPES_NAMES.items()
 }
 
 

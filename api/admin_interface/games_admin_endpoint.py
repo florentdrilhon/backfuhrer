@@ -2,9 +2,9 @@ import logging
 
 from flask import Blueprint, jsonify, redirect, render_template
 from flask_wtf import FlaskForm
-from wtforms import Form, SubmitField, StringField, IntegerField
+from wtforms import Form, SubmitField, StringField, IntegerField, SelectField
 from wtforms.validators import DataRequired
-from core.models.game import GameType, GAME_TYPES, Game
+from core.models.game import GameType, GAME_NAMES_TYPES, Game, GAME_TYPES_NAMES
 from core.persist import games_repository
 
 logger = logging.getLogger(__name__)
@@ -20,7 +20,7 @@ class GameForm(FlaskForm):
     min_number_of_players = IntegerField('Nombre minimum de joueurs', validators=[DataRequired()])
     max_number_of_players = IntegerField('Nombre maximum de joueurs', validators=[DataRequired()])
     image = StringField("Lien de l'image du jeu")
-    game_type = StringField("Type du jeu (doit correspondre aux types déjà connus):", validators=[DataRequired()])
+    game_type = SelectField("Type du jeu:", choices= GAME_TYPES_NAMES.values())
     submit = SubmitField('Enregister')
 
 
@@ -37,18 +37,17 @@ def games():
         max_number_of_players = form.max_number_of_players.data
         image = form.image.data
         game_type = form.game_type.data
-        if game_type not in GAME_TYPES:
-            message = f"Le type du jeu doit être une de ces valeurs : {GAME_TYPES.keys()}"
-        elif min_number_of_players > max_number_of_players:
+        if min_number_of_players > max_number_of_players:
             message = "Nombre minimum de joueur doit être inférieur au nombre maximum"
         else:
             game = Game(name=name, description=description, rules=rules, duration_min=duration_min,
                         number_of_players=(min_number_of_players, max_number_of_players),
-                        image=image, game_type=GAME_TYPES[game_type])
+                        image=image, game_type=GAME_NAMES_TYPES[game_type])
 
             res = games_repository.create_one(game)
-            if res.inserted_id != game._id:
-                logger.warning(f'Error when inserting the game')
+            if str(res.inserted_id) != str(game._id):
+                logger.warning(f'Error when inserting the game'
+                               f'inserted_id : {res.inserted_id}, game_id : {game._id}')
                 return render_template('error.html', entity='jeu')
             return redirect('../../admin')
 
