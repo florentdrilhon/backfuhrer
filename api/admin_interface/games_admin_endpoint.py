@@ -1,14 +1,27 @@
+import logging
+
 from flask import Blueprint, jsonify, redirect, render_template
 from flask_wtf import FlaskForm
-from wtforms import Form, SubmitField, StringField
+from wtforms import Form, SubmitField, StringField, IntegerField
 from wtforms.validators import DataRequired
+from core.models.game import GameType, GAME_TYPES, Game
+from core.persist import games_repository
+
+logger = logging.getLogger(__name__)
 
 admin_games_blueprint = Blueprint('admin/games/', __name__, template_folder='client/')
 
 
 class GameForm(FlaskForm):
     name = StringField('Nom du jeu:', validators=[DataRequired()])
-    submit = SubmitField('Envoyer')
+    description = StringField('Description du jeu:', validators=[DataRequired()])
+    rules = StringField('Règles du jeu:', validators=[DataRequired()])
+    duration_min = IntegerField('Estimation de la durée du jeu (minutes):', validators=[DataRequired()])
+    min_number_of_players = IntegerField('Nombre minimum de joueurs', validators=[DataRequired()])
+    max_number_of_players = IntegerField('Nombre maximum de joueurs', validators=[DataRequired()])
+    image = StringField("Lien de l'image du jeu")
+    game_type = StringField("Type du jeu (doit correspondre aux types déjà connus):", validators=[DataRequired()])
+    submit = SubmitField('Enregister')
 
 
 @admin_games_blueprint.route('/', methods=['GET', 'POST'])
@@ -17,8 +30,26 @@ def games():
     message = ""
     if form.validate_on_submit():
         name = form.name.data
-        message = "c'est bon mon Daniel"
-        return redirect('../../admin')
-    else:
-        message = "c'est pas bon mon Daniel"
+        description = form.description.data
+        rules = form.rules.data
+        duration_min = form.duration_min.data
+        min_number_of_players = form.min_number_of_players.data
+        max_number_of_players = form.max_number_of_players.data
+        image = form.image.data
+        game_type = form.game_type.data
+        if game_type not in GAME_TYPES:
+            message = f"Le type du jeu doit être une de ces valeurs : {GAME_TYPES.keys()}"
+        elif min_number_of_players > max_number_of_players:
+            message = "Nombre minimum de joueur doit être inférieur au nombre maximum"
+        else:
+            game = Game(name=name, description=description, rules=rules, duration_min=duration_min,
+                        number_of_players=(min_number_of_players, max_number_of_players),
+                        image=image, game_type=GAME_TYPES[game_type])
+
+            res = games_repository.create_one(game)
+            if res.inserted_id != game._id:
+                logger.warning(f'Error when inserting the game')
+                return render_template('error.html', entity='jeu')
+            return redirect('../../admin')
+
     return render_template('games.html', form=form, message=message)

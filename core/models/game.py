@@ -14,6 +14,11 @@ class GameType(Enum):
     Other = 'other'
 
 
+GAME_TYPES = {
+    g.value: g for g in GameType
+}
+
+
 @dataclass
 class Game(JsonSchemaMixin):
     _id: UUID
