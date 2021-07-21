@@ -4,7 +4,27 @@
 {% block styles %}
     {{ super() }}
     <style>
-        body { background: #e8f1f9; }
+        body {
+            background: #e8f1f9;
+        }
+
+        .field-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .field-entry{
+            margin-left: 20px;
+        }
+
+        input {
+            width: 700px;
+            height: 30px;
+        }
+
+        li input {
+            width: 300px;
+        }
     </style>
 {% endblock %}
 
@@ -23,9 +43,51 @@
                 <h1 class="pt-5 pb-2">Ajouter un cocktail</h1>
 
                 <p class="lead">Interface super boostée pour ajouter des cocktails dans la base de données</p>
+                <form action="" method="POST">
+                    {{ form.hidden_tag() }}
+                    <div class="field-container">
+                            <div class="field-name">{{ form.name.label }}</div>
+                            <div class="field-entry">{{ form.name }}</div>
+                    </div>
+                    <br/>
+                    <div class="field-container">
+                        <div class="field-name">{{ form.description.label }}</div>
+                        <div class="field-entry">{{ form.description }} </div>
+                    </div>
+                    <br/>
 
-                {{ wtf.quick_form(form) }}
+                    <div class="field-name"><h4>Ingrédients</h4></div>
+                    <ul>
+                        {% for nested in form.ingredients %}
+                            <li>
+                                <div class="field-container">
+                                    <div class="field-name"><h5>Ingrédient</h5></div>
+                                    <div class="field-entry">{{ nested.ingredient_name }}</div>
+                                    <div class="field-name"><h5>Quantité (ex: 5g)</h5></div>
+                                    <div class="field-entry">{{ nested.quantity }}</div>
+                                </div>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                    <div class="field-container">
+                        <div class="field-name">{{ form.preparation_time_min.label }}</div>
+                        <div class="field-entry"> {{ form.preparation_time_min }}</div>
+                    </div>
+                    <br/>
+                    <div class="field-container">
+                        <div class="field-name">{{ form.image.label }}</div>
+                        <div class="field-entry">{{ form.image }}</div>
+                    </div>
+                    <br/>
+                    <div class="field-container">
+                        <div class="field-name">{{ form.cocktail_type.label }}</div>
+                        <div class="field-entry">{{ form.cocktail_type }}</div>
+                    </div>
+                    <br/>
+                    <button> {{ form.submit }}</button>
 
+
+                </form>
                 <p class="pt-5"><strong>{{ message }}</strong></p>
 
             </div>

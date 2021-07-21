@@ -17,11 +17,12 @@ class IngredientForm(FlaskForm):
     quantity = StringField('Quantité et unité (ex: 5g)')
 
 
-class CoctkailForm(FlaskForm):
+class CocktailForm(FlaskForm):
     name = StringField('Nom du cocktail:', validators=[DataRequired()])
     description = StringField('Description du cocktail:', validators=[DataRequired()])
-    ingredients = FieldList(FormField(IngredientForm), min_entries=1)
-    preparation_time_min = IntegerField('Estimation de la durée de préparation du cocktail (minutes):', validators=[DataRequired()])
+    ingredients = FieldList(FormField(IngredientForm), min_entries=8, max_entries=8)
+    preparation_time_min = IntegerField('Estimation de la durée de préparation du cocktail (minutes):',
+                                        validators=[DataRequired()])
     image = StringField("Lien de l'image du cocktail")
     cocktail_type = SelectField("Type du cocktail:", choices=COCKTAIL_TYPES_NAMES.values())
     submit = SubmitField('Enregister')
@@ -29,12 +30,12 @@ class CoctkailForm(FlaskForm):
 
 @admin_cocktails_blueprint.route('/', methods=['GET', 'POST'])
 def cocktails():
-    form = CoctkailForm()
+    form = CocktailForm()
     message = ""
     if form.validate_on_submit():
         name = form.name.data
         description = form.description.data
-        ingredients = {f.data['ingredient_name']: f.data['quantity'] for f in form.ingredients.data}
+        ingredients = {f['ingredient_name']: f['quantity'] for f in form.ingredients.data}
         preparation_time_min = form.preparation_time_min.data
         image = form.image.data
         cocktail_type = form.cocktail_type.data
