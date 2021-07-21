@@ -35,7 +35,7 @@ def hello():
 @app.route('/admin/', methods=['GET', 'POST'])
 def home():
     if request.method == 'POST':
-        if request.form.get('Games') == 'Games':
+        if request.form.get('Games') == 'Jeux':
             return redirect('/admin/games')
 
         if request.form.get('Cocktails') == 'Cocktails':

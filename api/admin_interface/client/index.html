@@ -1,6 +1,50 @@
-<h1>Admin interface test</h1>
+{% extends 'bootstrap/base.html' %}
 
-<form method = "post">
-    <input type="submit" name="Games" value="Games">
-    <input type="submit" name="Cocktails" value="Cocktails">
-</form>
+
+{% block styles %}
+    {{ super() }}
+    <style>
+        body {
+            background: #e8f1f9;
+        }
+
+        .buttons-container {
+            display: flex;
+            justify-content: center;
+            margin: 15px;
+        }
+
+        .button {
+            height: 100px;
+            width: 200px;
+            margin: 15px;
+            font-weight: lighter;
+            font-size: calc(5px + 2vmin);
+        }
+
+    </style>
+{% endblock %}
+
+
+{% block title %}
+    Interface Admin
+{% endblock %}
+
+
+{% block content %}
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-10 col-lg-8 mx-lg-auto mx-md-auto">
+                <h1 class="pt-5 pb-2">Interface Admin</h1>
+                <p class="lead">Cliquez sur un bouton pour accéder à la page d'insetion de la donnée en question</p>
+                <form class="buttons-container" method="post">
+                    <input class="button" type="submit" name="Games" value="Jeux">
+                    <input class="button" type="submit" name="Cocktails" value="Cocktails">
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
