@@ -1,11 +1,12 @@
 import logging
 
-from flask import Blueprint, jsonify, redirect, render_template
+from flask import Blueprint, redirect, render_template
 from flask_wtf import FlaskForm
-from wtforms import Form, SubmitField, StringField, IntegerField, SelectField
+from wtforms import SubmitField, StringField, IntegerField, SelectField
 from wtforms.validators import DataRequired
-from core.models.game import GameType, GAME_NAMES_TYPES, Game, GAME_TYPES_NAMES
+from core.models.game import GAME_NAMES_TYPES, Game, GAME_TYPES_NAMES
 from core.persist import games_repository
+from api.admin_interface.auth import auth_required
 
 logger = logging.getLogger(__name__)
 
@@ -25,6 +26,7 @@ class GameForm(FlaskForm):
 
 
 @admin_games_blueprint.route('/', methods=['GET', 'POST'])
+@auth_required
 def games():
     form = GameForm()
     message = ""

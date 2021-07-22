@@ -1,9 +1,10 @@
 import logging
 
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, make_response
 from flask import jsonify, redirect
 from flask_bootstrap import Bootstrap
 
+from api.admin_interface.auth import auth_required
 from api.routes.cocktails_endpoint import cocktails_blueprint
 from api.routes.games_endpoint import games_blueprint
 from api.admin_interface.games_admin_endpoint import admin_games_blueprint
@@ -33,6 +34,7 @@ def hello():
 
 
 @app.route('/admin/', methods=['GET', 'POST'])
+@auth_required
 def home():
     if request.method == 'POST':
         if request.form.get('Games') == 'Jeux':

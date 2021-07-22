@@ -4,6 +4,8 @@
     "db_name": "partyfuhrer"
   },
   "flask-admin": {
-    "secret-key": "boostéduculmondaniel"
+    "secret-key": "boostéduculmondaniel",
+    "auth_username": "soiraxbdenovax",
+    "auth_password": "oh_doume_sa_va_ou_bieng"
   }
 }

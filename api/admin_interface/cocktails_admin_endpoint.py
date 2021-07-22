@@ -1,11 +1,14 @@
 import logging
 
-from flask import Blueprint, jsonify, redirect, render_template
-from flask_wtf import FlaskForm, Form
-from wtforms import Form, SubmitField, StringField, IntegerField, SelectField, FormField, FieldList
+from flask import Blueprint, redirect, render_template
+from flask_wtf import FlaskForm
+
+
+from wtforms import SubmitField, StringField, IntegerField, SelectField, FormField, FieldList
 from wtforms.validators import DataRequired
-from core.models.cocktail import CocktailType, COCKTAIL_NAMES_TYPES, Cocktail, COCKTAIL_TYPES_NAMES
+from core.models.cocktail import COCKTAIL_NAMES_TYPES, Cocktail, COCKTAIL_TYPES_NAMES
 from core.persist import cocktails_repository
+from api.admin_interface.auth import auth_required
 
 logger = logging.getLogger(__name__)
 
@@ -29,6 +32,7 @@ class CocktailForm(FlaskForm):
 
 
 @admin_cocktails_blueprint.route('/', methods=['GET', 'POST'])
+@auth_required
 def cocktails():
     form = CocktailForm()
     message = ""
