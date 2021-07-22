@@ -14,6 +14,18 @@ class GameType(Enum):
     Other = 'other'
 
 
+GAME_TYPES_NAMES = {
+    GameType.Cards: 'Cartes',
+    GameType.Dice: 'Dés',
+    GameType.MobileApplication: 'Application mobile',
+    GameType.Other: 'Autre'
+}
+
+GAME_NAMES_TYPES = {
+    name: game_type for game_type, name in GAME_TYPES_NAMES.items()
+}
+
+
 @dataclass
 class Game(JsonSchemaMixin):
     _id: UUID

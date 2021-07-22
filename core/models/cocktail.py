@@ -13,6 +13,17 @@ class CocktailType(Enum):
     Other = 'other'
 
 
+COCKTAIL_TYPES_NAMES = {
+    CocktailType.Alcohol: 'Alcool',
+    CocktailType.Soft: 'Mocktail',
+    CocktailType.Other: 'Autre'
+}
+
+COCKTAIL_NAMES_TYPES = {
+    name: game_type for game_type, name in COCKTAIL_TYPES_NAMES.items()
+}
+
+
 @dataclass
 class Cocktail(JsonSchemaMixin):
     _id: UUID

@@ -15,7 +15,7 @@ def get_all_games():
     games = games_repository.find_all_types()
     response = []
     for game in games:
-        game_obj = game.serialize()
+        game_obj = game.to_dict()
         response.append(game_obj)
     return jsonify(response)
 

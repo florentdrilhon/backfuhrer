@@ -5,14 +5,22 @@ from typing import Optional
 
 class MongoClientConfig:
     def __init__(self, uri: str, db_name: str):
-        self.uri=uri
-        self.db_name= db_name
+        self.uri = uri
+        self.db_name = db_name
+
+
+class FlaskAdminConfig:
+    def __init__(self, secret_key: str, auth_username: str, auth_password: str):
+        self.secret_key = secret_key
+        self.auth_username = auth_username
+        self.auth_password = auth_password
 
 
 class Config:
 
-    def __init__(self, mongo_client: Optional[MongoClientConfig]):
-        self.mongo_client= mongo_client
+    def __init__(self, mongo_client: Optional[MongoClientConfig], flask_admin: Optional[FlaskAdminConfig]):
+        self.mongo_client = mongo_client
+        self.flask_admin = flask_admin
 
 
 def load_conf():
@@ -20,9 +28,12 @@ def load_conf():
     file_path = os.path.join(curr_dir, '..', 'resources/config.json')
     with open(file_path) as json_file:
         data = json.load(json_file)
-    client=MongoClientConfig(uri=data["mongo_client"]["uri"],
-                             db_name=data["mongo_client"]["db_name"])
-    conf = Config(client)
+    client = MongoClientConfig(uri=data["mongo_client"]["uri"],
+                               db_name=data["mongo_client"]["db_name"])
+    flask = FlaskAdminConfig(secret_key=data["flask-admin"]["secret-key"],
+                             auth_username=data["flask-admin"]["auth_username"],
+                             auth_password=data["flask-admin"]["auth_password"])
+    conf = Config(client, flask)
     return conf
 
 
