@@ -16,9 +16,7 @@ def auth_required(f: Callable):
                 and auth.password == config.flask_admin.auth_password:
             return f(*args, **kwargs)
         logger.warning(f'Username expected: {config.flask_admin.auth_username}'
-                       f'Actual : {auth.username}'
-                       f'Password expected: {config.flask_admin.auth_password}'
-                       f'Actual : {auth.password}')
+                       f'Password expected: {config.flask_admin.auth_password}')
         return make_response("On a pas pu t'authentifier mon Daniel,"
                              " en plus t'as pas le passe sanitaire ça rentre même pas", 401,
                              {'WWW-Authenticate': 'Basic realm= "Login Required"'})
