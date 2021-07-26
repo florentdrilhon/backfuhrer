@@ -1,6 +1,6 @@
 import logging
 
-from flask import Blueprint, redirect, render_template
+from flask import Blueprint, redirect, render_template, request
 from flask_wtf import FlaskForm
 
 
@@ -36,19 +36,21 @@ class CocktailForm(FlaskForm):
 def cocktails():
     form = CocktailForm()
     message = ""
-    if form.validate_on_submit():
-        name = form.name.data
-        description = form.description.data
-        ingredients = {f['ingredient_name']: f['quantity'] for f in form.ingredients.data}
-        preparation_time_min = form.preparation_time_min.data
-        image = form.image.data
-        cocktail_type = form.cocktail_type.data
-        cocktail = Cocktail(name=name, description=description, ingredients=ingredients,
-                            preparation_time_min=preparation_time_min,
-                            image=image, cocktail_type=COCKTAIL_NAMES_TYPES[cocktail_type])
+    if request.method == 'POST' and form.is_submitted():
+        try:
+            logger.warning('Inserting cocktail')
+            name = form.name.data
+            description = form.description.data
+            ingredients = {f['ingredient_name']: f['quantity'] for f in form.ingredients.data}
+            preparation_time_min = form.preparation_time_min.data
+            image = form.image.data
+            cocktail_type = form.cocktail_type.data
+            cocktail = Cocktail(name=name, description=description, ingredients=ingredients,
+                                preparation_time_min=preparation_time_min,
+                                image=image, cocktail_type=COCKTAIL_NAMES_TYPES[cocktail_type])
 
-        res = cocktails_repository.create_one(cocktail)
-        if str(res.inserted_id) != str(cocktail._id):
+            res = cocktails_repository.create_one(cocktail)
+        except Exception:
             logger.warning(f'Error when inserting the cocktail'
                            f'inserted_id : {res.inserted_id}, cocktail_id : {cocktail._id}')
             return render_template('error.html', entity='cocktail')

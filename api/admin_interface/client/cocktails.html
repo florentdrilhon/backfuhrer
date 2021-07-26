@@ -43,8 +43,9 @@
                 <h1 class="pt-5 pb-2">Ajouter un cocktail</h1>
 
                 <p class="lead">Interface super boostée pour ajouter des cocktails dans la base de données</p>
-                <form action="" method="POST">
+                <form method="post" action="" class="form" role="form">
                     {{ form.hidden_tag() }}
+                    {{ form.csrf_token() }}
                     <div class="field-container">
                             <div class="field-name">{{ form.name.label }}</div>
                             <div class="field-entry">{{ form.name }}</div>
@@ -84,8 +85,7 @@
                         <div class="field-entry">{{ form.cocktail_type }}</div>
                     </div>
                     <br/>
-                    <button> {{ form.submit }}</button>
-
+                    <button type="submit" >{{ form.submit }} </button>
 
                 </form>
                 <p class="pt-5"><strong>{{ message }}</strong></p>
