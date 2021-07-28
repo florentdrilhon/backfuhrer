@@ -1,6 +1,6 @@
 import logging
 
-from flask import Blueprint, redirect, render_template
+from flask import Blueprint, redirect, render_template, url_for
 from flask_wtf import FlaskForm
 from wtforms import SubmitField, StringField, IntegerField, SelectField
 from wtforms.validators import DataRequired
@@ -51,6 +51,6 @@ def games():
                 logger.warning(f'Error when inserting the game'
                                f'inserted_id : {res.inserted_id}, game_id : {game._id}')
                 return render_template('error.html', entity='jeu')
-            return redirect('../../admin')
+            return redirect(url_for('home'))
 
     return render_template('games.html', form=form, message=message)

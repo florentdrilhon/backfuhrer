@@ -1,6 +1,6 @@
 import logging
 
-from flask import Blueprint, redirect, render_template, request
+from flask import Blueprint, redirect, render_template, request, url_for
 from flask_wtf import FlaskForm
 
 
@@ -54,6 +54,6 @@ def cocktails():
             logger.warning(f'Error when inserting the cocktail'
                            f'inserted_id : {res.inserted_id}, cocktail_id : {cocktail._id}')
             return render_template('error.html', entity='cocktail')
-        return redirect('../../admin')
+        return redirect(url_for('home'))
 
     return render_template('cocktails.html', form=form, message=message)
