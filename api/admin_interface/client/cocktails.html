@@ -85,7 +85,12 @@
                         <div class="field-entry">{{ form.cocktail_type }}</div>
                     </div>
                     <br/>
-                    <button type="submit" >{{ form.submit }} </button>
+                    <button type="submit" onclick="myFunction()" >{{ form.submit }} </button>
+                    <script>
+                        function myFunction() {
+                            window.location.href={{ url_for("home") }};
+                        }
+                    </script>
 
                 </form>
                 <p class="pt-5"><strong>{{ message }}</strong></p>
