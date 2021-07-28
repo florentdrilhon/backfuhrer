@@ -1,8 +1,8 @@
 import logging
 
-from flask import Blueprint, jsonify
+from flask import Blueprint, jsonify, request
 
-from core.models.game import Game, GameType
+from core.models.game import Game, GameType, GAME_TYPE_MAPPING
 from core.persist import games_repository
 
 logger = logging.getLogger(__name__)
@@ -20,20 +20,29 @@ def get_all_games():
     return jsonify(response)
 
 
-@games_blueprint.route('/insert_test', methods=['GET'])
-def test():
-    my_game = Game()
-    my_game.name = "test"
-    my_game.description = "test"
-    my_game.rules = "test"
-    my_game.duration_min = 12
-    my_game.number_of_players = (12, 25)
-    my_game.image = "test"
-    my_game.game_type = GameType.Cards
-    insertion_status = games_repository.create_one(my_game)
-    if insertion_status.inserted_id is not None:
-        res = {'successfully inserted game ': insertion_status.inserted_id}
-    else:
-        res = {'error when inserting game': my_game.uid}
-    logger.info(f'Insert status : {insertion_status}')
-    return jsonify(res)
+@games_blueprint.route('', methods=['POST'])
+def create_game():
+    games_details = request.json
+    try:
+        game = Game(
+                    name=games_details["name"],
+                    description=games_details["description"],
+                    rules=games_details["rules"],
+                    duration_min=games_details["duration_min"],
+                    number_of_players=games_details["number_of_players"],
+                    image=games_details["image"],
+                    game_type=GAME_TYPE_MAPPING[games_details["game_type"]],
+                    )
+        res = games_repository.create_one(game)
+        if str(res.inserted_id) == str(game._id):
+            resp = jsonify('Game added successfully')
+            resp.status_code = 200
+        else:
+            resp = jsonify('Issue when inserting game in DB')
+            resp.status_code = 500
+    except (KeyError, ValueError):
+        logger.warning(f'error when making game from dict : {games_details}')
+        resp = jsonify('Issue encountered when inserting game')
+        resp.status_code = 500
+
+    return resp

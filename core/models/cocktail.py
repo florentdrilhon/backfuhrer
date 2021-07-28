@@ -23,6 +23,10 @@ COCKTAIL_NAMES_TYPES = {
     name: game_type for game_type, name in COCKTAIL_TYPES_NAMES.items()
 }
 
+COCKTAIL_TYPE_MAPPING = {
+    c.value: c for c in CocktailType
+}
+
 
 @dataclass
 class Cocktail(JsonSchemaMixin):

@@ -25,6 +25,10 @@ GAME_NAMES_TYPES = {
     name: game_type for game_type, name in GAME_TYPES_NAMES.items()
 }
 
+GAME_TYPE_MAPPING = {
+    g.value: g for g in GameType
+}
+
 
 @dataclass
 class Game(JsonSchemaMixin):
