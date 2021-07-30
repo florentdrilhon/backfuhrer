@@ -14,7 +14,8 @@ games_blueprint = Blueprint('games', __name__)
 # TODO add some args here to complete api endpoint
 @games_blueprint.route('', methods=['GET'])
 def get_all_games():
-    games = games_repository.find_all_types()
+    game_types = [GAME_TYPE_MAPPING.get(g_t, None) for g_t in request.args.getlist('game_type')]
+    games = games_repository.find_all_types(types=game_types)
     response = []
     for game in games:
         game_obj = game.to_dict()

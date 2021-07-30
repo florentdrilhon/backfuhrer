@@ -18,8 +18,8 @@ games = db.get_collection(name="games")
 
 def find_all_types(types: Optional[List[GameType]] = None) -> List[Game]:
     conditions = {}
-    if types is not None:
-        conditions["game_type"] = {'$in': types}
+    if types is not None and len(types) > 0:
+        conditions["game_type"] = {'$in': [t.value for t in types]}
     data = None
     try:
         data = games.find(conditions)
