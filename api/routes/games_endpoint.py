@@ -11,11 +11,17 @@ logger = logging.getLogger(__name__)
 games_blueprint = Blueprint('games', __name__)
 
 
-# TODO add some args here to complete api endpoint
 @games_blueprint.route('', methods=['GET'])
 def get_all_games():
+    # get args from request
     game_types = [GAME_TYPE_MAPPING.get(g_t, None) for g_t in request.args.getlist('game_type')]
-    games = games_repository.find_all_types(types=game_types)
+    min_number_player = request.args.get("min_number_player", None)
+    max_number_player = request.args.get("max_number_player", None)
+    games = games_repository.list_by(types=game_types,
+                                     min_number_player=int(
+                                         min_number_player) if min_number_player is not None else None,
+                                     max_number_player=int(
+                                         max_number_player) if max_number_player is not None else None)
     response = []
     for game in games:
         game_obj = game.to_dict()

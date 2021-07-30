@@ -16,12 +16,20 @@ db = client.get_database(name=config.mongo_client.db_name)
 games = db.get_collection(name="games")
 
 
-def find_all_types(types: Optional[List[GameType]] = None) -> List[Game]:
+def list_by(types: Optional[List[GameType]] = None,
+            min_number_player: Optional[int] = None,
+            max_number_player: Optional[int] = None) -> List[Game]:
     conditions = {}
     if types is not None and len(types) > 0:
         conditions["game_type"] = {'$in': [t.value for t in types]}
+    if min_number_player is not None:
+        conditions["number_of_players.0"] = {'$gte': min_number_player}
+    if max_number_player is not None:
+        conditions["number_of_players.1"] = {'$lte': max_number_player}
+
     data = None
     try:
+        logger.warning(f'Looking for cocktail with conditions {conditions}')
         data = games.find(conditions)
     except TypeError:
         logger.error('Error when getting games from DB: : type specified are wrong')
