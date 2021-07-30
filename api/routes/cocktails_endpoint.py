@@ -2,8 +2,9 @@ import logging
 
 from flask import Blueprint, jsonify, request
 
-from core.models.cocktail import Cocktail, COCKTAIL_TYPE_MAPPING
+from core.models.cocktail import Cocktail, COCKTAIL_TYPE_MAPPING, CocktailType
 from core.persist import cocktails_repository
+from api.admin_interface.auth import auth_required
 
 logger = logging.getLogger(__name__)
 
@@ -21,27 +22,32 @@ def get_all_cocktails():
 
 
 @cocktails_blueprint.route('', methods=['POST'])
+@auth_required
 def create_cocktail():
     cocktails_details = request.json
     try:
         cocktail = Cocktail(
-            name=cocktails_details["name"],
-            description=cocktails_details["description"],
-            ingredients=cocktails_details["ingredients"],
-            preparation_time_min=cocktails_details["preparation_time_min"],
-            image=cocktails_details["image"],
-            cocktail_type=COCKTAIL_TYPE_MAPPING[cocktails_details["cocktail_type"]],
+            name=cocktails_details.get("name"),
+            description=cocktails_details.get("description"),
+            ingredients=cocktails_details.get("ingredients"),
+            preparation_time_min=cocktails_details.get("preparation_time_min"),
+            image=cocktails_details.get("image"),
+            cocktail_type=COCKTAIL_TYPE_MAPPING[cocktails_details.get("cocktail_type", CocktailType.Other)],
         )
+        logger.info(f'Inserting game {cocktail.name} in DB')
         res = cocktails_repository.create_one(cocktail)
         if str(res.inserted_id) == str(cocktail._id):
-            resp = jsonify('Cocktail added successfully')
-            resp.status_code = 200
+            message = 'Cocktail added successfully'
+            logger.info(message)
+            status_code = 200
         else:
-            resp = jsonify('Issue when inserting cocktail in DB')
-            resp.status_code = 500
+            message = 'Issue when inserting cocktail in DB'
+            logger.info(message)
+            status_code = 500
     except (KeyError, ValueError):
-        logger.warning(f'error when making cocktail from dict : {cocktails_details}')
-        resp = jsonify('Issue encountered when inserting cocktail')
-        resp.status_code = 500
+        message = f'Error when making cocktail from dict : {cocktails_details}'
+        status_code = 500
 
+    resp = jsonify(message)
+    resp.status_code = status_code
     return resp
