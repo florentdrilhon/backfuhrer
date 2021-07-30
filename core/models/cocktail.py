@@ -27,6 +27,8 @@ COCKTAIL_TYPE_MAPPING = {
     c.value: c for c in CocktailType
 }
 
+COCKTAIL_DEFAULT_IMAGE = "https://images.unsplash.com/photo-1536935338788-846bb9981813?ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8Y29ja3RhaWx8ZW58MHx8MHx8&ixlib=rb-1.2.1&w=1000&q=80"
+
 
 @dataclass
 class Cocktail(JsonSchemaMixin):
@@ -52,12 +54,12 @@ class Cocktail(JsonSchemaMixin):
                  updated_at: datetime = datetime.now(tz=tzutc())
                  ):
         self._id = _id or uuid4()
-        self.name = name
-        self.description = description
-        self.ingredients = ingredients
-        self.preparation_time_min = preparation_time_min
-        self.image = image
-        self.cocktail_type = cocktail_type
+        self.name = name or ""
+        self.description = description or ""
+        self.ingredients = ingredients or {"": ""}
+        self.preparation_time_min = preparation_time_min or 5
+        self.image = image or COCKTAIL_DEFAULT_IMAGE
+        self.cocktail_type = cocktail_type or CocktailType.Other
         self.created_at = created_at
         self.updated_at = updated_at
 

@@ -4,13 +4,15 @@
 {% block styles %}
     {{ super() }}
     <style>
-        body { background: #e8f1f9; }
+        body {
+            background: #e8f1f9;
+        }
     </style>
 {% endblock %}
 
 
 {% block title %}
-    Oooops
+    {{ block_title }}
 {% endblock %}
 
 
@@ -20,7 +22,9 @@
         <div class="row">
             <div class="col-md-10 col-lg-8 mx-lg-auto mx-md-auto">
 
-                <h1 class="pt-5 pb-2">Erreur en ajoutant un {{ entity }}</h1>
+                <h1 class="pt-5 pb-2">{{ message }}</h1>
+
+                <a href="../"><input class="button" type="submit" name="Admin" value="Retour menu"></a>
 
             </div>
         </div>

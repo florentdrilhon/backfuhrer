@@ -13,13 +13,19 @@
             flex-direction: column;
             justify-content: center;
         }
-        .field-entry{
+
+        .field-entry {
             margin-left: 20px;
         }
 
         input {
             width: 700px;
             height: 30px;
+        }
+
+        textarea {
+            width: 700px;
+            height: 300px;
         }
 
         li input {
@@ -47,8 +53,8 @@
                     {{ form.hidden_tag() }}
                     {{ form.csrf_token() }}
                     <div class="field-container">
-                            <div class="field-name">{{ form.name.label }}</div>
-                            <div class="field-entry">{{ form.name }}</div>
+                        <div class="field-name">{{ form.name.label }}</div>
+                        <div class="field-entry">{{ form.name }}</div>
                     </div>
                     <br/>
                     <div class="field-container">
@@ -85,10 +91,10 @@
                         <div class="field-entry">{{ form.cocktail_type }}</div>
                     </div>
                     <br/>
-                    <button type="submit" onclick="myFunction()" >{{ form.submit }} </button>
+                    <button type="submit" onclick="myFunction()">{{ form.submit }} </button>
                     <script>
                         function myFunction() {
-                            window.location.href={{ url_for("home") }};
+                            window.location.href ={{ url_for("home") }};
                         }
                     </script>
 
