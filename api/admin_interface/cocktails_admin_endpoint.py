@@ -1,6 +1,6 @@
 import logging
 
-from flask import Blueprint, redirect, render_template, request, url_for
+from flask import Blueprint, render_template, request
 from flask_wtf import FlaskForm
 
 from wtforms import SubmitField, StringField, IntegerField, SelectField, FormField, FieldList, TextAreaField
@@ -48,13 +48,17 @@ def cocktails():
                                 ingredients=ingredients,
                                 preparation_time_min=preparation_time_min,
                                 image=image, cocktail_type=COCKTAIL_NAMES_TYPES[cocktail_type])
-
             res = cocktails_repository.create_one(cocktail)
+            # setting up the values displayed in the web page
+            block_title = 'Niquel Miguel'
+            message = "C'est bon, on a bien inséré ton cocktail en base donnée sans le moindre souci"
         except Exception as err:
             logger.warning(f'Error when inserting the cocktail'
                            f'inserted_id : {res.inserted_id}, cocktail_id : {cocktail._id} \n'
                            f'Error: {err}')
-            return render_template('error.html', entity='cocktail')
-        return redirect(url_for('home'))
+            block_title = 'Ooops'
+            message = f'Ouula oops, on a rencontré une petite erreur en insérant ton cocktail en base de données 😅'
+
+        return render_template('landing_page.html', message=message, block_title=block_title)
 
     return render_template('cocktails.html', form=form, message=message)
