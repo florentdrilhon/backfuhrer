@@ -29,6 +29,12 @@ GAME_TYPE_MAPPING = {
     g.value: g for g in GameType
 }
 
+GAME_DEFAULT_IMAGES = {
+    GameType.Cards: "https://www.letribunaldunet.fr/wp-content/uploads/2018/06/alcool.jpg",
+    GameType.Dice: "https://static1.magazine.ribambel.com/articles/1/20/71/@/29680-lancez-les-des-et-observez-le-resultat-v2_article_medium-1.jpg",
+    GameType.Other : "https://www.jeux-alcool.com/wp-content/uploads/2017/03/beerPong.jpeg"
+}
+
 
 @dataclass
 class Game(JsonSchemaMixin):
@@ -56,13 +62,13 @@ class Game(JsonSchemaMixin):
                  updated_at: datetime = datetime.now(tz=tzutc())
                  ):
         self._id = _id or uuid4()
-        self.name = name
-        self.description = description
-        self.rules = rules
-        self.duration_min = duration_min
-        self.number_of_players = number_of_players
-        self.image = image
-        self.game_type = game_type
+        self.name = name or ""
+        self.description = description or ""
+        self.rules = rules or ""
+        self.duration_min = duration_min or 0
+        self.number_of_players = number_of_players or (0, 10)
+        self.game_type = game_type or GameType.Other
+        self.image = image or GAME_DEFAULT_IMAGES[self.game_type]
         self.created_at = created_at
         self.updated_at = updated_at
 
