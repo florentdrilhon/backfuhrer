@@ -16,10 +16,10 @@ db = client.get_database(name=config.mongo_client.db_name)
 cocktails = db.get_collection(name="cocktails")
 
 
-def find_all_types(types: Optional[List[CocktailType]] = None) -> List[Cocktail]:
+def list_by(types: Optional[List[CocktailType]] = None) -> List[Cocktail]:
     conditions = {}
     if types is not None:
-        conditions["cocktail_type"] = {'$in': types}
+        conditions["cocktail_type"] = {'$in': [t.value for t in types]}
     data = None
     try:
         data = cocktails.find(conditions)
