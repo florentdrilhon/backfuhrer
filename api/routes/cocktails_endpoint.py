@@ -13,7 +13,11 @@ cocktails_blueprint = Blueprint('cocktails', __name__)
 
 @cocktails_blueprint.route('', methods=['GET'])
 def get_all_cocktails():
-    cocktails = cocktails_repository.find_all_types()
+    cocktail_types = [COCKTAIL_TYPE_MAPPING.get(g_t, None) for g_t in request.args.getlist('cocktail_type')]
+    max_preparation_time = request.args.get("max_preparation_time", None)
+    cocktails = cocktails_repository.list_by(types=cocktail_types if len(cocktail_types) > 0 else None,
+                                             max_preparation_time=int(
+                                                 max_preparation_time) if max_preparation_time is not None else None)
     response = []
     for cocktail in cocktails:
         cocktail_obj = cocktail.to_dict()
@@ -34,7 +38,7 @@ def create_cocktail():
             image=cocktails_details.get("image"),
             cocktail_type=COCKTAIL_TYPE_MAPPING[cocktails_details.get("cocktail_type", CocktailType.Other)],
         )
-        logger.info(f'Inserting game {cocktail.name} in DB')
+        logger.info(f'Inserting cocktail {cocktail.name} in DB')
         res = cocktails_repository.create_one(cocktail)
         if str(res.inserted_id) == str(cocktail._id):
             message = 'Cocktail added successfully'

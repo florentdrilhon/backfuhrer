@@ -32,6 +32,7 @@ GAME_TYPE_MAPPING = {
 GAME_DEFAULT_IMAGES = {
     GameType.Cards: "https://www.letribunaldunet.fr/wp-content/uploads/2018/06/alcool.jpg",
     GameType.Dice: "https://static1.magazine.ribambel.com/articles/1/20/71/@/29680-lancez-les-des-et-observez-le-resultat-v2_article_medium-1.jpg",
+    GameType.MobileApplication: "https://static1.magazine.ribambel.com/articles/1/20/71/@/29680-lancez-les-des-et-observez-le-resultat-v2_article_medium-1.jpg",
     GameType.Other : "https://www.jeux-alcool.com/wp-content/uploads/2017/03/beerPong.jpeg"
 }
 
