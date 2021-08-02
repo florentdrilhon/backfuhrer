@@ -16,12 +16,16 @@ db = client.get_database(name=config.mongo_client.db_name)
 cocktails = db.get_collection(name="cocktails")
 
 
-def list_by(types: Optional[List[CocktailType]] = None) -> List[Cocktail]:
+def list_by(types: Optional[List[CocktailType]] = None,
+            max_preparation_time: Optional[int] = None) -> List[Cocktail]:
     conditions = {}
-    if types is not None:
+    if types is not None and len(types) > 0 :
         conditions["cocktail_type"] = {'$in': [t.value for t in types]}
+    if max_preparation_time is not None:
+        conditions["preparation_time_min"] = {'$lte': max_preparation_time}
     data = None
     try:
+        logger.warning(f'Getting cocktail with conditions: {conditions}')
         data = cocktails.find(conditions)
     except TypeError:
         logger.error('Error when getting cocktails from DB: type specified are wrong')

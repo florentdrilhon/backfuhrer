@@ -14,7 +14,10 @@ cocktails_blueprint = Blueprint('cocktails', __name__)
 @cocktails_blueprint.route('', methods=['GET'])
 def get_all_cocktails():
     cocktail_types = [COCKTAIL_TYPE_MAPPING.get(g_t, None) for g_t in request.args.getlist('cocktail_type')]
-    cocktails = cocktails_repository.list_by(types=cocktail_types)
+    max_preparation_time = request.args.get("max_preparation_time", None)
+    cocktails = cocktails_repository.list_by(types=cocktail_types if len(cocktail_types) > 0 else None,
+                                             max_preparation_time=int(
+                                                 max_preparation_time) if max_preparation_time is not None else None)
     response = []
     for cocktail in cocktails:
         cocktail_obj = cocktail.to_dict()
