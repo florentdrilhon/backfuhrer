@@ -3,6 +3,7 @@ attrs==21.2.0
 click==8.0.1
 colorama==0.4.4
 dataclasses-jsonschema==2.14.1
+dataclasses-json==0.5.4
 dnspython==1.16.0
 dominate==2.6.0
 Flask==2.0.1
