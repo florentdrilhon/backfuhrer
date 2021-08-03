@@ -1,40 +1,39 @@
 import json
 import os
-from typing import Optional
+import pyhocon
+from pyhocon.converter import HOCONConverter
+from dataclasses import dataclass
+from dataclasses_json import dataclass_json, Undefined
 
 
+@dataclass_json(undefined=Undefined.EXCLUDE)
+@dataclass(frozen=True)
 class MongoClientConfig:
-    def __init__(self, uri: str, db_name: str):
-        self.uri = uri
-        self.db_name = db_name
+    uri: str
+    db_name: str
 
 
+@dataclass_json(undefined=Undefined.EXCLUDE)
+@dataclass(frozen=True)
 class FlaskAdminConfig:
-    def __init__(self, secret_key: str, auth_username: str, auth_password: str):
-        self.secret_key = secret_key
-        self.auth_username = auth_username
-        self.auth_password = auth_password
+    secret_key: str
+    auth_username: str
+    auth_password: str
 
 
+@dataclass_json(undefined=Undefined.EXCLUDE)
+@dataclass(frozen=True)
 class Config:
-
-    def __init__(self, mongo_client: Optional[MongoClientConfig], flask_admin: Optional[FlaskAdminConfig]):
-        self.mongo_client = mongo_client
-        self.flask_admin = flask_admin
+    mongo_client: MongoClientConfig
+    flask_admin: FlaskAdminConfig
 
 
 def load_conf():
     curr_dir = os.path.dirname(os.path.abspath(__file__))
-    file_path = os.path.join(curr_dir, '..', 'resources/config.json')
-    with open(file_path) as json_file:
-        data = json.load(json_file)
-    client = MongoClientConfig(uri=data["mongo_client"]["uri"],
-                               db_name=data["mongo_client"]["db_name"])
-    flask = FlaskAdminConfig(secret_key=data["flask-admin"]["secret-key"],
-                             auth_username=data["flask-admin"]["auth_username"],
-                             auth_password=data["flask-admin"]["auth_password"])
-    conf = Config(client, flask)
-    return conf
+    file_path = os.path.join(curr_dir, '..', 'resources/application.conf')
+    hocon_config = pyhocon.ConfigFactory.parse_file(file_path)
+    json_conf = json.loads(HOCONConverter.to_json(hocon_config, compact=True))
+    return Config.schema().load(json_conf)
 
 
 config: Config = load_conf()
