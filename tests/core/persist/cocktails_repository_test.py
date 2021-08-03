@@ -24,14 +24,17 @@ def test_list_by_all():
 
 
 def test_list_by_cocktail_type():
-    alcohol_cocktails = list_of(lambda: utils.new_cocktail(cocktail_type=CocktailType.Alcohol), min_count=3)
+    my_cocktail_type = one_of(CocktailType)
+    alcohol_cocktails = list_of(lambda: utils.new_cocktail(cocktail_type=my_cocktail_type), min_count=3)
     non_alcohol_cocktails = list_of(lambda: utils.new_cocktail(cocktail_type=one_of(CocktailType,
-                                                                                    excluding=[CocktailType.Alcohol])))
-    retrieved_cocktails = cocktails_repository.list_by(types=[CocktailType.Alcohol])
+                                                                                    excluding=[my_cocktail_type])))
+    retrieved_cocktails = cocktails_repository.list_by(types=[my_cocktail_type])
     for cocktail in alcohol_cocktails:
         assert cocktail in retrieved_cocktails
     for cocktail in non_alcohol_cocktails:
         assert cocktail not in retrieved_cocktails
+    for cocktail in retrieved_cocktails:
+        assert cocktail.cocktail_type == my_cocktail_type
 
 
 def test_list_by_preparation_time():
@@ -42,5 +45,7 @@ def test_list_by_preparation_time():
         assert cocktail in retrieved_cocktails
     for cocktail in not_good_cocktails:
         assert cocktail not in retrieved_cocktails
+    for cocktail in retrieved_cocktails:
+        assert cocktail.preparation_time_min <= 5
 
 
