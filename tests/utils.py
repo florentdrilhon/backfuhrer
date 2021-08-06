@@ -9,6 +9,17 @@ ASCII_DIGITS = list(string.digits)
 ASCII_PUNCTUATION = list(string.punctuation)
 
 
+def ascii_string(count=10, lower=True, upper=False, digits=False, punctuation=False, starts_with_letter=True):
+    choices = ((ASCII_LOWER if lower else [])
+               + (ASCII_UPPER if upper else [])
+               + (ASCII_DIGITS if digits else [])
+               + (ASCII_PUNCTUATION if punctuation else []))
+    if starts_with_letter:
+        return random.choice(ASCII_LOWER) + ''.join(random.choices(choices, k=count - 1))
+    else:
+        return ''.join(random.choices(choices, k=count))
+
+
 def one_of(lst: Union[List, Set, enum.EnumMeta], excluding: Optional[Union[List, Set]] = None):
     if excluding is not None:
         lst = set(lst) - set(excluding)
