@@ -22,6 +22,7 @@ class IngredientForm(FlaskForm):
 class CocktailForm(FlaskForm):
     name = StringField('Nom du cocktail:', validators=[DataRequired()])
     description = TextAreaField('Description du cocktail:', validators=[DataRequired()])
+    recipe = FieldList(StringField('Etape:'), min_entries=6)
     ingredients = FieldList(FormField(IngredientForm), min_entries=6)
     preparation_time_min = IntegerField('Estimation de la durée de préparation du cocktail (minutes):',
                                         validators=[DataRequired()])
@@ -40,11 +41,13 @@ def cocktails():
             name = form.name.data
             logger.warning(f'Inserting cocktail {name} in DB')
             description = form.description.data
+            recipe = [d for d in form.recipe.data]
             ingredients = {f['ingredient_name']: f['quantity'] for f in form.ingredients.data}
             preparation_time_min = form.preparation_time_min.data
             image = form.image.data
             cocktail_type = form.cocktail_type.data
             cocktail = Cocktail(name=name, description=description,
+                                recipe=recipe,
                                 ingredients=ingredients,
                                 preparation_time_min=preparation_time_min,
                                 image=image, cocktail_type=COCKTAIL_NAMES_TYPES[cocktail_type])
@@ -54,7 +57,7 @@ def cocktails():
             message = "C'est bon, on a bien inséré ton cocktail en base donnée sans le moindre souci"
         except Exception as err:
             logger.warning(f'Error when inserting the cocktail'
-                           f'inserted_id : {res.inserted_id}, cocktail_id : {cocktail._id} \n'
+                           f'cocktail_id : {cocktail._id} \n'
                            f'Error: {err}')
             block_title = 'Ooops'
             message = f'Ouula oops, on a rencontré une petite erreur en insérant ton cocktail en base de données 😅'

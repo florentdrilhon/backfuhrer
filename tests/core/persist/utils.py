@@ -1,4 +1,4 @@
-from typing import Optional, Tuple, Dict
+from typing import Optional, Tuple, Dict, List
 
 from core.models.game import Game, GameType
 from core.models.cocktail import Cocktail, CocktailType
@@ -28,6 +28,7 @@ def new_game(name: Optional[str] = None,
 def new_cocktail(name: Optional[str] = None,
                  ingredients: Optional[Dict[str, str]] = None,
                  description: Optional[str] = None,
+                 recipe: Optional[List[str]] = None,
                  preparation_time_min: Optional[int] = None,
                  image: Optional[str] = None,
                  cocktail_type: Optional[CocktailType] = None) -> Cocktail:
@@ -35,6 +36,7 @@ def new_cocktail(name: Optional[str] = None,
     cocktail.name = name or ascii_string()
     cocktail.ingredients = ingredients or {ascii_string(5, 10): ascii_string(5, 10)}
     cocktail.description = description or ascii_string()
+    cocktail.recipe = recipe or [ascii_string(10) for _ in range(random_number(1, 6))]
     cocktail.preparation_time_min = preparation_time_min or random_number(10, 60)
     cocktail.image = image or ascii_string()
     cocktail.cocktail_type = cocktail_type or one_of(CocktailType)

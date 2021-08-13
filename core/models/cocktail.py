@@ -1,6 +1,6 @@
 from datetime import datetime
 from uuid import uuid4, UUID
-from typing import Dict, Optional
+from typing import Dict, Optional, List
 from enum import Enum
 from dataclasses import dataclass
 from dataclasses_jsonschema import JsonSchemaMixin
@@ -35,6 +35,7 @@ class Cocktail(JsonSchemaMixin):
     _id: UUID
     name: str
     description: str
+    recipe: List[str]
     ingredients: Dict[str, str]  # name / quantity as a str for now
     preparation_time_min: int
     image: str
@@ -46,6 +47,7 @@ class Cocktail(JsonSchemaMixin):
                  _id: Optional[UUID] = None,
                  name: Optional[str] = None,
                  description: Optional[str] = None,
+                 recipe: Optional[List[str]] = None,
                  ingredients: Optional[Dict[str, str]] = None,
                  preparation_time_min: Optional[int] = None,
                  image: Optional[str] = None,
@@ -56,6 +58,7 @@ class Cocktail(JsonSchemaMixin):
         self._id = _id or uuid4()
         self.name = name or ""
         self.description = description or ""
+        self.recipe = recipe or [""]
         self.ingredients = ingredients or {"": ""}
         self.preparation_time_min = preparation_time_min or 5
         self.image = image or COCKTAIL_DEFAULT_IMAGE
