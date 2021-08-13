@@ -41,7 +41,7 @@ def cocktails():
             name = form.name.data
             logger.warning(f'Inserting cocktail {name} in DB')
             description = form.description.data
-            recipe = [d for d in form.recipe.data]
+            recipe = [d for d in form.recipe.data if len(d) > 0]
             ingredients = {f['ingredient_name']: f['quantity'] for f in form.ingredients.data}
             preparation_time_min = form.preparation_time_min.data
             image = form.image.data
