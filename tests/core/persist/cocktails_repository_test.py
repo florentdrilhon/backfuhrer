@@ -49,3 +49,10 @@ def test_list_by_preparation_time():
         assert cocktail.preparation_time_min <= 5
 
 
+def test_delete_by():
+    cocktails = list_of(lambda: utils.new_cocktail())
+    result = cocktails_repository.delete_by([g._id for g in cocktails])
+    assert result.deleted_count == len(cocktails)
+
+
+

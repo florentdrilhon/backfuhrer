@@ -4,7 +4,7 @@ from typing import Optional, List
 from uuid import UUID
 
 from pymongo import MongoClient
-from pymongo.results import InsertOneResult
+from pymongo.results import InsertOneResult, DeleteResult
 
 from core.config import config
 from core.models.cocktail import Cocktail, CocktailType
@@ -19,7 +19,7 @@ cocktails = db.get_collection(name="cocktails")
 def list_by(types: Optional[List[CocktailType]] = None,
             max_preparation_time: Optional[int] = None) -> List[Cocktail]:
     conditions = {}
-    if types is not None and len(types) > 0 :
+    if types is not None and len(types) > 0:
         conditions["cocktail_type"] = {'$in': [t.value for t in types]}
     if max_preparation_time is not None:
         conditions["preparation_time_min"] = {'$lte': max_preparation_time}
@@ -55,3 +55,15 @@ def find_by(_id: UUID) -> Optional[Cocktail]:
 def create_one(cocktail: Cocktail) -> InsertOneResult:
     obj = cocktail.to_dict()
     return cocktails.insert_one(obj)
+
+
+def delete_by(ids: Optional[List[UUID]] = None) -> Optional[DeleteResult]:
+    conditions = {}
+    if ids is not None and len(ids) > 0:
+        conditions["_id"] = {'$in': [str(_id) for _id in ids]}
+    data = None
+    try:
+        data = cocktails.delete_many(conditions)
+    except TypeError:
+        logger.error('Error when deleting games from DB: type specified are wrong')
+    return data
