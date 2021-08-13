@@ -62,6 +62,17 @@
                         <div class="field-entry">{{ form.description }} </div>
                     </div>
                     <br/>
+                    <div class="field-name"><h4>Recette</h4></div>
+                    <ul>
+                        {% for nested in form.recipe %}
+                            <li>
+                                <div class="field-container">
+                                    <div class="field-name"><h5>{{ nested.label }}</h5></div>
+                                    <div class="field-entry">{{ nested }}</div>
+                                </div>
+                            </li>
+                        {% endfor %}
+                    </ul>
 
                     <div class="field-name"><h4>Ingrédients</h4></div>
                     <ul>
