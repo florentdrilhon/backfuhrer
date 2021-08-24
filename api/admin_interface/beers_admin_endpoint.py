@@ -3,7 +3,7 @@ import logging
 from flask import Blueprint, render_template, request
 from flask_wtf import FlaskForm
 
-from wtforms import SubmitField, StringField, IntegerField, SelectField, TextAreaField
+from wtforms import SubmitField, StringField, SelectField, TextAreaField, FloatField
 from wtforms.validators import DataRequired
 from core.models.beer import BEER_NAMES_TYPES, Beer, BEER_TYPES_NAMES, BEER_CATEGORIES_NAMES, BEER_NAMES_CATEGORIES
 from core.persist import beers_repository
@@ -17,8 +17,8 @@ admin_beers_blueprint = Blueprint('admin/beers/', __name__, template_folder='cli
 class BeerForm(FlaskForm):
     name = StringField('Nom de la bière:', validators=[DataRequired()])
     description = TextAreaField('Description de la bière:', validators=[DataRequired()])
-    price = IntegerField('Prix de la bière (au litre) : ', validators=[DataRequired()])
-    alcohol_percentage = IntegerField("Volume d'alcool (en %)", validators=[DataRequired()])
+    price = FloatField('Prix de la bière (au litre) : ', validators=[DataRequired()])
+    alcohol_percentage = FloatField("Volume d'alcool (en %)", validators=[DataRequired()])
     image = StringField("Lien de l'image de la bière")
     beer_type = SelectField("Type de la bière:", choices=BEER_TYPES_NAMES.values())
     beer_category = SelectField("Catégorie de la bière:", choices=BEER_CATEGORIES_NAMES.values())
