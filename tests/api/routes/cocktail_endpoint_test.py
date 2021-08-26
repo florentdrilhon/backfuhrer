@@ -15,7 +15,7 @@ def test_list_cocktails(client):
 def test_list_cocktails_by_cocktail_type(client):
     cocktail_type = one_of(CocktailType)
     new_cocktail = utils.new_cocktail(cocktail_type=cocktail_type)
-    response = client.get(f'/cocktails?cocktail_type={cocktail_type.value}')
+    response = client.get(f'/cocktails?type={cocktail_type.value}')
     assert response.status_code == 200
     cocktails = [Cocktail.from_db(d) for d in response.get_json()]
     assert new_cocktail in cocktails

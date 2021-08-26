@@ -17,15 +17,13 @@ games = db.get_collection(name="games")
 
 
 def list_by(game_types: Optional[List[GameType]] = None,
-            min_number_players: Optional[int] = None,
-            max_number_players: Optional[int] = None) -> List[Game]:
+            number_players: Optional[int] = None) -> List[Game]:
     conditions = {}
     if game_types is not None and len(game_types) > 0:
         conditions["game_type"] = {'$in': [t.value for t in game_types]}
-    if min_number_players is not None:
-        conditions["number_of_players.1"] = {'$gte': min_number_players}
-    if max_number_players is not None:
-        conditions["number_of_players.0"] = {'$lte': max_number_players}
+    if number_players is not None:
+        conditions["number_of_players.1"] = {'$gte': number_players}
+        conditions["number_of_players.0"] = {'$lte': number_players}
 
     data = None
     try:
@@ -61,8 +59,10 @@ def create_one(game: Game) -> InsertOneResult:
     return games.insert_one(obj)
 
 
-def delete_by(ids: List[UUID]) -> Optional[DeleteResult]:
-    conditions = {"_id": {'$in': [str(_id) for _id in ids]}}
+def delete_by(ids: Optional[List[UUID]] = None) -> Optional[DeleteResult]:
+    conditions = {}
+    if ids is not None and len(ids) > 0:
+        conditions["_id"] = {'$in': [str(_id) for _id in ids]}
     data = None
     try:
         data = games.delete_many(conditions)

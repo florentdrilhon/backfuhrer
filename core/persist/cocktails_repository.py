@@ -65,5 +65,5 @@ def delete_by(ids: Optional[List[UUID]] = None) -> Optional[DeleteResult]:
     try:
         data = cocktails.delete_many(conditions)
     except TypeError:
-        logger.error('Error when deleting games from DB: type specified are wrong')
+        logger.error('Error when deleting cocktails from DB: type specified are wrong')
     return data
