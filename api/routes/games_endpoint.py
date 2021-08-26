@@ -15,7 +15,7 @@ games_blueprint = Blueprint('games', __name__)
 def get_all_games():
     # get args from request
     game_types = [GAME_TYPE_MAPPING.get(g_t, None) for g_t in request.args.getlist('type')]
-    number_player = request.args.get("number_player", None)
+    number_player = request.args.get("number_players", None)
     games = games_repository.list_by(game_types=game_types,
                                      number_players=int(
                                          number_player) if number_player is not None else None)
