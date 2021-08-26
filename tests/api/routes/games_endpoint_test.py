@@ -21,23 +21,13 @@ def test_list_games_by_game_type(client):
     assert new_game in games
 
 
-def test_list_games_by_min_player(client):
-    min_player = random_number(5, 9)
-    new_game = utils.new_game(number_of_players=(random_number(1, 4), 10))
-    response = client.get(f'/games?min_number_player={min_player}')
+def test_list_games_by_number_player(client):
+    number_player = random_number(5, 9)
+    new_game = utils.new_game(number_of_players=(number_player - 1, number_player + 1))
+    response = client.get(f'/games?number_player={number_player}')
     assert response.status_code == 200
     games = [Game.from_db(d) for d in response.get_json()]
     assert new_game in games
     for game in games:
-        assert game.number_of_players[1] >= min_player
-
-
-def test_list_games_by_max_player(client):
-    max_player = random_number(5, 9)
-    new_game = utils.new_game(number_of_players=(4, random_number(9, 11)))
-    response = client.get(f'/games?max_number_player={max_player}')
-    assert response.status_code == 200
-    games = [Game.from_db(d) for d in response.get_json()]
-    assert new_game in games
-    for game in games:
-        assert game.number_of_players[0] <= max_player
+        assert game.number_of_players[1] >= number_player
+        assert game.number_of_players[0] <= number_player
