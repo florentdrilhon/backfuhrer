@@ -15,7 +15,7 @@ def test_list_games(client):
 def test_list_games_by_game_type(client):
     game_type = one_of(GameType)
     new_game = utils.new_game(game_type=game_type)
-    response = client.get(f'/games?game_type={game_type.value}')
+    response = client.get(f'/games?type={game_type.value}')
     assert response.status_code == 200
     games = [Game.from_db(d) for d in response.get_json()]
     assert new_game in games

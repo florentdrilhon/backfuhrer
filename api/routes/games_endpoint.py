@@ -14,7 +14,7 @@ games_blueprint = Blueprint('games', __name__)
 @games_blueprint.route('', methods=['GET'])
 def get_all_games():
     # get args from request
-    game_types = [GAME_TYPE_MAPPING.get(g_t, None) for g_t in request.args.getlist('game_type')]
+    game_types = [GAME_TYPE_MAPPING.get(g_t, None) for g_t in request.args.getlist('type')]
     min_number_player = request.args.get("min_number_player", None)
     max_number_player = request.args.get("max_number_player", None)
     games = games_repository.list_by(game_types=game_types,
