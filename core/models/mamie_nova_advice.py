@@ -40,7 +40,7 @@ class MamieNovaAdvice(JsonSchemaMixin):
     name: Optional[str]
     description: Optional[str]
     image: Optional[str]
-    advice_type: Optional[MamieNovaAdviceType]
+    mamie_nova_advice_type: Optional[MamieNovaAdviceType]
     links: Optional[Dict[str, str]]
     created_at: datetime
     updated_at: datetime
@@ -50,7 +50,7 @@ class MamieNovaAdvice(JsonSchemaMixin):
                  name: Optional[str] = None,
                  description: Optional[str] = None,
                  image: Optional[str] = None,
-                 advice_type: Optional[MamieNovaAdviceType] = None,
+                 mamie_nova_advice_type: Optional[MamieNovaAdviceType] = None,
                  links: Optional[Dict[str, str]] = None,
                  created_at: datetime = datetime.now(tz=tzutc()),
                  updated_at: datetime = datetime.now(tz=tzutc())
@@ -58,7 +58,7 @@ class MamieNovaAdvice(JsonSchemaMixin):
         self._id = _id or uuid4()
         self.name = name or ""
         self.description = description or ""
-        self.advice_type = advice_type or MamieNovaAdviceType.Other
+        self.mamie_nova_advice_type = mamie_nova_advice_type or MamieNovaAdviceType.Other
         self.image = image or DEFAULT_IMAGE  # TODO
         self.links = links or {" ": " "}
         self.created_at = created_at
