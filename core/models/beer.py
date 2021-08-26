@@ -46,7 +46,7 @@ class BeerCategory(Enum):
 
 # each category with its real name to display (admin interface)
 BEER_CATEGORIES_NAMES = {
-    BeerCategory.Classical: "les classiques",
+    BeerCategory.Classical: "Les classiques",
     BeerCategory.Cheap: "Les pas chères",
     BeerCategory.Strong: "Les fortes",
     BeerCategory.Unusual: "Les insolites",
