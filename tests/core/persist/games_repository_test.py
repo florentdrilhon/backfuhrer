@@ -16,12 +16,6 @@ def test_find_by_id():
     assert db_game == game
 
 
-def test_delete_by():
-    games = list_of(lambda: utils.new_game())
-    result = games_repository.delete_by([g._id for g in games])
-    assert result.deleted_count == len(games)
-
-
 def test_list_by_all():
     games = list_of(utils.new_game, min_count=3)
     retrieved_games = games_repository.list_by()
@@ -68,3 +62,14 @@ def test_list_by_max_number_player():
     for game in retrieved_games:
         assert game.number_of_players[0] <= 6
 
+
+def test_delete_by():
+    games = list_of(lambda: utils.new_game())
+    result = games_repository.delete_by([g._id for g in games])
+    assert result.deleted_count == len(games)
+
+
+def test_delete_all():
+    _ = games_repository.delete_by()
+    retrieved_games = games_repository.list_by()
+    assert len(retrieved_games) == 0

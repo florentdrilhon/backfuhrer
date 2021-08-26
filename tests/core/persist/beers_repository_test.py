@@ -17,12 +17,6 @@ def test_find_by_id():
     assert db_beer == beer
 
 
-def test_delete_by():
-    beers = list_of(lambda: utils.new_beer())
-    result = beers_repository.delete_by([g._id for g in beers])
-    assert result.deleted_count == len(beers)
-
-
 def test_list_by_all():
     beers = list_of(utils.new_beer, min_count=3)
     retrieved_beers = beers_repository.list_by()
@@ -69,3 +63,16 @@ def test_list_by_max_price():
         assert beer not in retrieved_beers
     for beer in retrieved_beers:
         assert beer.price <= 20
+
+
+def test_delete_by():
+    beers = list_of(lambda: utils.new_beer())
+    result = beers_repository.delete_by([g._id for g in beers])
+    assert result.deleted_count == len(beers)
+
+
+def test_delete_all():
+    _ = beers_repository.delete_by()
+    retrieved_beers = beers_repository.list_by()
+    assert len(retrieved_beers) == 0
+

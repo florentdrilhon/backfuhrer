@@ -55,4 +55,7 @@ def test_delete_by():
     assert result.deleted_count == len(cocktails)
 
 
-
+def test_delete_all():
+    _ = cocktails_repository.delete_by()
+    retrieved_cocktails = cocktails_repository.list_by()
+    assert len(retrieved_cocktails) == 0

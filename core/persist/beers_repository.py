@@ -59,8 +59,10 @@ def create_one(beer: Beer) -> InsertOneResult:
     return beers.insert_one(obj)
 
 
-def delete_by(ids: List[UUID]) -> Optional[DeleteResult]:
-    conditions = {"_id": {'$in': [str(_id) for _id in ids]}}
+def delete_by(ids: Optional[List[UUID]] = None) -> Optional[DeleteResult]:
+    conditions = {}
+    if ids is not None and len(ids) > 0:
+        conditions["_id"] = {'$in': [str(_id) for _id in ids]}
     data = None
     try:
         data = beers.delete_many(conditions)
