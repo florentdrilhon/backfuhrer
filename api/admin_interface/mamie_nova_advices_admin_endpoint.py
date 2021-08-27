@@ -46,10 +46,12 @@ def mamie_nova_advices():
                                                 image=image,
                                                 mamie_nova_advice_type=MAMIE_NOVA_ADVICE_NAMES_TYPES[
                                                     mamie_nova_advice_type])
-            mamie_nova_advices_repository.create_one(mamie_nova_advice)
+            res = mamie_nova_advices_repository.create_one(mamie_nova_advice)
             # setting up the values displayed in the web page
-            block_title = 'Niquel Miguel'
-            message = "C'est bon, on a bien inséré ton conseil mamie nova en base donnée sans le moindre souci"
+            block_title = 'Niquel Miguel' if res.inserted_id is not None else 'Ooops'
+            message = "C'est bon, on a bien inséré ton conseil mamie nova en base donnée sans le moindre souci" \
+                if res.inserted_id is not None \
+                else f'Ouula oops, on a rencontré une petite erreur en insérant ton mamie_nova_advice en base de données 😅'
         except Exception as err:
             logger.warning(f'Error when inserting the mamie_nova_advice'
                            f'mamie_nova_advice_id : {mamie_nova_advice._id} \n'
