@@ -12,6 +12,7 @@ from api.routes.mamie_nova_advices_endpoint import mamie_nova_advices_blueprint
 from api.admin_interface.games_admin_endpoint import admin_games_blueprint
 from api.admin_interface.cocktails_admin_endpoint import admin_cocktails_blueprint
 from api.admin_interface.beers_admin_endpoint import admin_beers_blueprint
+from api.admin_interface.mamie_nova_advices_admin_endpoint import admin_mamie_nova_advices_blueprint
 from core.config import config
 
 logger = logging.getLogger(__name__)
@@ -31,6 +32,7 @@ def register_routes(app: Flask = app):
     app.register_blueprint(admin_games_blueprint, url_prefix='/admin/games')
     app.register_blueprint(admin_cocktails_blueprint, url_prefix='/admin/cocktails')
     app.register_blueprint(admin_beers_blueprint, url_prefix='/admin/beers')
+    app.register_blueprint(admin_mamie_nova_advices_blueprint, url_prefix='/admin/mamie_nova_advices')
 
 
 @app.route('/', methods=['GET'])

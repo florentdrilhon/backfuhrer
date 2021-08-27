@@ -1,0 +1,104 @@
+{% extends 'bootstrap/base.html' %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block styles %}
+    {{ super() }}
+    <style>
+        body {
+            background: #e8f1f9;
+        }
+
+        .field-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .field-entry {
+            margin-left: 20px;
+        }
+
+        input {
+            width: 700px;
+            height: 30px;
+        }
+
+        textarea {
+            width: 700px;
+            height: 300px;
+        }
+
+        li input {
+            width: 300px;
+        }
+    </style>
+{% endblock %}
+
+
+{% block title %}
+    Cocktails
+{% endblock %}
+
+
+{% block content %}
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-10 col-lg-8 mx-lg-auto mx-md-auto">
+
+                <h1 class="pt-5 pb-2">Ajouter un conseil Mamie Nova</h1>
+
+                <p class="lead">Interface super boostée pour ajouter des conseil Mamie Nova dans la base de données</p>
+                <form method="post" action="" class="form" role="form">
+                    {{ form.hidden_tag() }}
+                    {{ form.csrf_token() }}
+                    <div class="field-container">
+                        <div class="field-name">{{ form.name.label }}</div>
+                        <div class="field-entry">{{ form.name }}</div>
+                    </div>
+                    <br/>
+                    <div class="field-container">
+                        <div class="field-name">{{ form.description.label }}</div>
+                        <div class="field-entry">{{ form.description }} </div>
+                    </div>
+                    <br/>
+
+                    <div class="field-name"><h4>Liens utiles</h4></div>
+                    <ul>
+                        {% for nested in form.links %}
+                            <li>
+                                <div class="field-container">
+                                    <div class="field-name"><h5>Nom du lien</h5></div>
+                                    <div class="field-entry">{{ nested.link_name }}</div>
+                                    <div class="field-name"><h5>Lien</h5></div>
+                                    <div class="field-entry">{{ nested.link }}</div>
+                                </div>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                    <br/>
+                    <div class="field-container">
+                        <div class="field-name">{{ form.image.label }}</div>
+                        <div class="field-entry">{{ form.image }}</div>
+                    </div>
+                    <br/>
+                    <div class="field-container">
+                        <div class="field-name">{{ form.mamie_nova_advice_type.label }}</div>
+                        <div class="field-entry">{{ form.mamie_nova_advice_type }}</div>
+                    </div>
+                    <br/>
+                    <button type="submit" onclick="myFunction()">{{ form.submit }} </button>
+                    <script>
+                        function myFunction() {
+                            window.location.href ={{ url_for("home") }};
+                        }
+                    </script>
+
+                </form>
+                <p class="pt-5"><strong>{{ message }}</strong></p>
+
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
