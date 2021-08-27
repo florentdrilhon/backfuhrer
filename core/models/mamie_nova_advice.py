@@ -15,7 +15,7 @@ class MamieNovaAdviceType(Enum):
     Other = 'other'
 
 
-MAMIE_NOVA_TYPES_NAMES = {
+MAMIE_NOVA_ADVICE_TYPES_NAMES = {
     MamieNovaAdviceType.Application: 'Application mobile',
     MamieNovaAdviceType.Location: 'Lieu',
     MamieNovaAdviceType.Transport: 'Transports',
@@ -23,11 +23,11 @@ MAMIE_NOVA_TYPES_NAMES = {
     MamieNovaAdviceType.Other: 'Autre'
 }
 
-MAMIE_NOVA_NAMES_TYPES = {
-    name: game_type for game_type, name in MAMIE_NOVA_TYPES_NAMES.items()
+MAMIE_NOVA_ADVICE_NAMES_TYPES = {
+    name: game_type for game_type, name in MAMIE_NOVA_ADVICE_TYPES_NAMES.items()
 }
 
-MAMIE_NOVA_TYPE_MAPPING = {
+MAMIE_NOVA_ADVICE_TYPE_MAPPING = {
     g.value: g for g in MamieNovaAdviceType
 }
 

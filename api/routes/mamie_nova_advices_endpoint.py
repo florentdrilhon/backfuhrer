@@ -2,7 +2,7 @@ import logging
 
 from flask import Blueprint, jsonify, request
 
-from core.models.mamie_nova_advice import MamieNovaAdvice, MAMIE_NOVA_TYPE_MAPPING, MamieNovaAdviceType
+from core.models.mamie_nova_advice import MamieNovaAdvice, MAMIE_NOVA_ADVICE_TYPE_MAPPING, MamieNovaAdviceType
 from core.persist import mamie_nova_advices_repository
 from api.admin_interface.auth import auth_required
 
@@ -14,7 +14,7 @@ mamie_nova_advices_blueprint = Blueprint('mamie_nova_advices', __name__)
 @mamie_nova_advices_blueprint.route('', methods=['GET'])
 def get_all_mamie_nova_advices():
     # get args from request
-    mamie_nova_advice_types = [MAMIE_NOVA_TYPE_MAPPING.get(g_t, None) for g_t in request.args.getlist('type')]
+    mamie_nova_advice_types = [MAMIE_NOVA_ADVICE_TYPE_MAPPING.get(g_t, None) for g_t in request.args.getlist('type')]
     mamie_nova_advices = mamie_nova_advices_repository.list_by(mamie_nova_advice_types=mamie_nova_advice_types)
     response = []
     for mamie_nova_advice in mamie_nova_advices:
@@ -33,7 +33,7 @@ def create_mamie_nova_advice():
             description=mamie_nova_advices_details.get("description"),
             links=mamie_nova_advices_details.get("links"),
             image=mamie_nova_advices_details.get("image"),
-            mamie_nova_advice_type=MAMIE_NOVA_TYPE_MAPPING[
+            mamie_nova_advice_type=MAMIE_NOVA_ADVICE_TYPE_MAPPING[
                 mamie_nova_advices_details.get("mamie_nova_advice_type", MamieNovaAdviceType.Other)],
         )
         logger.info(f'Inserting mamie_nova_advice {mamie_nova_advice.name} in DB')
