@@ -3,7 +3,8 @@ from typing import Optional, Tuple, Dict, List
 from core.models.beer import BeerCategory, BeerType, Beer
 from core.models.game import Game, GameType
 from core.models.cocktail import Cocktail, CocktailType
-from core.persist import games_repository, cocktails_repository, beers_repository
+from core.models.mamie_nova_advice import MamieNovaAdvice, MamieNovaAdviceType
+from core.persist import games_repository, cocktails_repository, beers_repository, mamie_nova_advices_repository
 from tests.utils import random_number, one_of, ascii_string
 
 
@@ -62,3 +63,18 @@ def new_beer(name: Optional[str] = None,
     beer.category = category or one_of(BeerCategory)
     beers_repository.create_one(beer)
     return beer
+
+
+def new_mamie_nova_advice(name: Optional[str] = None,
+                          description: Optional[str] = None,
+                          image: Optional[str] = None,
+                          mamie_nova_advice_type: Optional[BeerType] = None,
+                          links: Optional[Dict[str, str]] = None) -> MamieNovaAdvice:
+    mamie_nova_advice = MamieNovaAdvice()
+    mamie_nova_advice.name = name or ascii_string()
+    mamie_nova_advice.description = description or ascii_string()
+    mamie_nova_advice.image = image or ascii_string()
+    mamie_nova_advice.mamie_nova_advice_type = mamie_nova_advice_type or one_of(MamieNovaAdviceType)
+    mamie_nova_advice.links = links or {ascii_string(): ascii_string()}
+    mamie_nova_advices_repository.create_one(mamie_nova_advice)
+    return mamie_nova_advice
