@@ -1,7 +1,7 @@
 import logging
 
-from flask import Flask, render_template, request, make_response
-from flask import jsonify, redirect
+from flask import Flask, render_template
+from flask import jsonify
 from flask_bootstrap import Bootstrap
 
 from api.admin_interface.auth import auth_required

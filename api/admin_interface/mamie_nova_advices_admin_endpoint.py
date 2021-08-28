@@ -3,7 +3,7 @@ import logging
 from flask import Blueprint, render_template, request
 from flask_wtf import FlaskForm
 
-from wtforms import SubmitField, StringField, IntegerField, SelectField, FormField, FieldList, TextAreaField
+from wtforms import SubmitField, StringField, SelectField, FormField, FieldList, TextAreaField
 from wtforms.validators import DataRequired
 from core.models.mamie_nova_advice import MAMIE_NOVA_ADVICE_NAMES_TYPES, MamieNovaAdvice, MAMIE_NOVA_ADVICE_TYPES_NAMES
 from core.persist import mamie_nova_advices_repository
