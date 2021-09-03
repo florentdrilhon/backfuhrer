@@ -3,8 +3,10 @@ import logging
 from flask import Blueprint, jsonify, request
 
 from core.models.cocktail import Cocktail, COCKTAIL_TYPE_MAPPING, CocktailType
+from core.models.enum import Collection
 from core.persist import cocktails_repository
 from api.admin_interface.auth import auth_required
+from core.services import search_service
 
 logger = logging.getLogger(__name__)
 
@@ -55,3 +57,15 @@ def create_cocktail():
     resp = jsonify(message)
     resp.status_code = status_code
     return resp
+
+
+@cocktails_blueprint.route('/search', methods=['GET'])
+def search_cocktails():
+    # get args from request
+    name = request.args.get("name", None)
+    cocktails = search_service.search_by_name(searched_name=name, collection=Collection.Cocktails)
+    response = []
+    for cocktail in cocktails:
+        cocktail_obj = cocktail.to_dict()
+        response.append(cocktail_obj)
+    return jsonify(response)

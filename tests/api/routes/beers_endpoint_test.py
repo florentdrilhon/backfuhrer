@@ -1,6 +1,6 @@
 from core.models.beer import Beer, BeerType, BeerCategory
 from tests.core.persist import utils
-from tests.utils import one_of, random_number
+from tests.utils import one_of, random_number, ascii_string, list_of
 from tests.fixtures.app import client
 
 
@@ -39,3 +39,14 @@ def test_list_beers_by_max_price(client):
     assert new_beer in beers
     for beer in beers:
         assert beer.price <= max_price
+
+
+def test_search_by_name(client):
+    name = ascii_string()
+    new_beers = list_of(lambda: utils.new_beer(name=name), count=3)
+    response = client.get(f'/beers/search?name={name}')
+    assert response.status_code == 200
+    beers = [Beer.from_db(d) for d in response.get_json()]
+    assert len(beers) >= len(new_beers)
+    for beer in new_beers:
+        assert beer in beers

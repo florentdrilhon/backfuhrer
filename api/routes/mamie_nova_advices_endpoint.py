@@ -2,9 +2,11 @@ import logging
 
 from flask import Blueprint, jsonify, request
 
+from core.models.enum import Collection
 from core.models.mamie_nova_advice import MamieNovaAdvice, MAMIE_NOVA_ADVICE_TYPE_MAPPING, MamieNovaAdviceType
 from core.persist import mamie_nova_advices_repository
 from api.admin_interface.auth import auth_required
+from core.services import search_service
 
 logger = logging.getLogger(__name__)
 
@@ -55,3 +57,15 @@ def create_mamie_nova_advice():
     resp = jsonify(message)
     resp.status_code = status_code
     return resp
+
+
+@mamie_nova_advices_blueprint.route('/search', methods=['GET'])
+def search_mamie_nova_advices():
+    # get args from request
+    name = request.args.get("name", None)
+    mamie_nova_advices = search_service.search_by_name(searched_name=name, collection=Collection.MamieNovaAdvices)
+    response = []
+    for mamie_nova_advice in mamie_nova_advices:
+        mamie_nova_advice_obj = mamie_nova_advice.to_dict()
+        response.append(mamie_nova_advice_obj)
+    return jsonify(response)

@@ -3,7 +3,10 @@ import logging
 from flask import Blueprint, jsonify, request
 
 from core.models.game import Game, GAME_TYPE_MAPPING, GameType
+from core.models.enum import Collection
 from core.persist import games_repository
+from core.services import search_service
+
 from api.admin_interface.auth import auth_required
 
 logger = logging.getLogger(__name__)
@@ -59,3 +62,15 @@ def create_game():
     resp = jsonify(message)
     resp.status_code = status_code
     return resp
+
+
+@games_blueprint.route('/search', methods=['GET'])
+def search_games():
+    # get args from request
+    name = request.args.get("name", None)
+    games = search_service.search_by_name(searched_name=name, collection=Collection.Games)
+    response = []
+    for game in games:
+        game_obj = game.to_dict()
+        response.append(game_obj)
+    return jsonify(response)

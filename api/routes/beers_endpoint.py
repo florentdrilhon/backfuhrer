@@ -3,8 +3,10 @@ import logging
 from flask import Blueprint, jsonify, request
 
 from core.models.beer import Beer, BEER_TYPE_MAPPING, BeerType, BeerCategory, BEER_CATEGORY_MAPPING
+from core.models.enum import Collection
 from core.persist import beers_repository
 from api.admin_interface.auth import auth_required
+from core.services import search_service
 
 logger = logging.getLogger(__name__)
 
@@ -61,3 +63,15 @@ def create_beer():
     resp = jsonify(message)
     resp.status_code = status_code
     return resp
+
+
+@beers_blueprint.route('/search', methods=['GET'])
+def search_beers():
+    # get args from request
+    name = request.args.get("name", None)
+    beers = search_service.search_by_name(searched_name=name, collection=Collection.Beers)
+    response = []
+    for beer in beers:
+        beer_obj = beer.to_dict()
+        response.append(beer_obj)
+    return jsonify(response)

@@ -1,6 +1,6 @@
 from core.models.cocktail import Cocktail, CocktailType
 from tests.core.persist import utils
-from tests.utils import one_of, random_number
+from tests.utils import one_of, random_number, ascii_string, list_of
 from tests.fixtures.app import client
 
 
@@ -34,4 +34,12 @@ def test_list_cocktails_max_preparation_time(client):
         assert cocktail.preparation_time_min <= max_preparation_time
 
 
-
+def test_search_by_name(client):
+    name = ascii_string()
+    new_cocktails = list_of(lambda: utils.new_cocktail(name=name), count=3)
+    response = client.get(f'/cocktails/search?name={name}')
+    assert response.status_code == 200
+    cocktails = [Cocktail.from_db(d) for d in response.get_json()]
+    assert len(cocktails) >= len(new_cocktails)
+    for cocktail in new_cocktails:
+        assert cocktail in cocktails
