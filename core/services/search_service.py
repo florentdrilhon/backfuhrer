@@ -1,6 +1,7 @@
 from typing import List, Optional, Dict
 
 from difflib import SequenceMatcher
+from uuid import UUID
 
 from core.models.enum import Collection, Entity
 from core.persist import games_repository, beers_repository, mamie_nova_advices_repository, cocktails_repository
@@ -24,18 +25,18 @@ I figured out an other solution to do so
 """
 
 
-def name_proximity(searched_name: str, entity_names: List[str]) -> Dict[str, float]:
+def name_similarity(searched_name: str, entities: List[Entity]) -> Dict[UUID, float]:
     """
     :param searched_name: str provided by the query to compare with entities
-    :param entity_names: entity names to compare with searched_name
+    :param entities: entities which name to compare with searched_name
 
-    :return: the Dict of each entity name and its associated similarity with the searched_name
+    :return: the Dict of each entity id and its associated similarity with the searched_name
     """
     res = {}
-    for entity_name in entity_names:
-        name = entity_name.lower()
+    for entity in entities:
+        name = entity.name.lower()
         similarity = SequenceMatcher(None, name, searched_name.lower()).ratio()
-        res[entity_name] = similarity
+        res[entity._id] = similarity
     return {x: y for x, y in sorted(res.items(), key=lambda t: t[1])}
 
 
@@ -52,11 +53,11 @@ def search_by_name(searched_name: str,
     # gather all entities
     lister = DEFAULT_REPO_LISTER[collection]
     entities = lister()
-    name_entities = {e.name: e for e in entities}
+    entities_ids_mappping = {e._id: e for e in entities}
     # compare the proximity
-    entities_similarities = name_proximity(searched_name, list(name_entities.keys()))
+    entities_similarities = name_similarity(searched_name, entities)
     res = []
-    for entity_name, similarity in entities_similarities.items():
+    for entity_id, similarity in entities_similarities.items():
         if similarity > similarity_threshold:
-            res.append(name_entities[entity_name])
+            res.append(entities_ids_mappping[entity_id])
     return res
