@@ -3,6 +3,8 @@ import logging
 from flask import Flask, render_template
 from flask import jsonify
 from flask_bootstrap import Bootstrap
+from flasgger import Swagger
+
 
 from api.admin_interface.auth import auth_required
 from api.routes.cocktails_endpoint import cocktails_blueprint
@@ -22,6 +24,8 @@ app = Flask(__name__, template_folder='api/admin_interface/client/')
 app.config['SECRET_KEY'] = config.flask_admin.secret_key
 
 Bootstrap(app)
+
+Swagger(app)
 
 
 def register_routes(app: Flask = app):
