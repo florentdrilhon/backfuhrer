@@ -1,18 +1,22 @@
 import logging
 
 from flask import Blueprint, jsonify, request
+from flasgger import swag_from
 
 from core.models.beer import Beer, BEER_TYPE_MAPPING, BeerType, BeerCategory, BEER_CATEGORY_MAPPING
 from core.models.enum import Collection
 from core.persist import beers_repository
-from api.admin_interface.auth import auth_required
 from core.services import search_service
+
+from api.docs.beer_docs import beer_get_specs_dict, beer_search_specs_dict
+from api.admin_interface.auth import auth_required
 
 logger = logging.getLogger(__name__)
 
 beers_blueprint = Blueprint('beers', __name__)
 
 
+@swag_from(beer_get_specs_dict)
 @beers_blueprint.route('', methods=['GET'])
 def get_all_beers():
     # get args from request
@@ -65,6 +69,7 @@ def create_beer():
     return resp
 
 
+@swag_from(beer_search_specs_dict)
 @beers_blueprint.route('/search', methods=['GET'])
 def search_beers():
     # get args from request

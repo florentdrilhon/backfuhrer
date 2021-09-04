@@ -4,6 +4,7 @@ game_model = {"Game":
     {
         "type": "object",
         "properties": {
+            "_id": {"type": "UUID"},
             "name": {"type": "string"},
             "description": {"type": "string"},
             "rules": {"type": "string"},

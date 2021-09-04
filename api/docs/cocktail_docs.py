@@ -4,6 +4,7 @@ cocktail_model = {"Cocktail":
     {
         "type": "object",
         "properties": {
+            "_id": {"type": "UUID"},
             "name": {"type": "string"},
             "description": {"type": "string"},
             "recipe": {"type": "array", "items": {"type": "string"}},
