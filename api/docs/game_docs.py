@@ -1,7 +1,5 @@
 from core.models.game import GameType
 
-from core.models.game import GameType
-
 game_model = {"Game":
     {
         "type": "object",
