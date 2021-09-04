@@ -9,7 +9,7 @@ game_model = {"Game":
             "rules": {"type": "string"},
             "duration_min": {"type": "integer"},
             "game_type": {"type": "string", "enum": [g_t.value for g_t in GameType], },
-            "number_of_players": {"type": "tuple(integer, integer)"},
+            "number_of_players": {"type": "array", "items": {"type": "integer"}, "minItems": 1, "maxItems": 2},
             "image": {"type": "string"},
             "created_at": {"type": "datetime"},
             "updated_at": {"type": "datetime"},
