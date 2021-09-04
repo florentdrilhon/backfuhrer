@@ -46,3 +46,23 @@ game_get_specs_dict = {
         }
     }
 }
+
+game_search_specs_dict = {
+    "parameters": [
+        {
+            "name": "name",
+            "in": "path",
+            "type": "string",
+            "required": "true"
+        }
+    ],
+    "definitions": game_model,
+    "responses": {
+        "200": {
+            "description": "A list of games searched by name",
+            "schema": {
+                "$ref": "#/definitions/Game"
+            }
+        }
+    }
+}
