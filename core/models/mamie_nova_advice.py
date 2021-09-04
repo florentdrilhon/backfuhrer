@@ -1,6 +1,6 @@
 from datetime import datetime
 from uuid import uuid4, UUID
-from typing import Tuple, Optional, Dict
+from typing import Optional, Dict
 from enum import Enum
 from dataclasses import dataclass
 from dataclasses_jsonschema import JsonSchemaMixin

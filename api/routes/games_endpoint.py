@@ -1,7 +1,9 @@
 import logging
 
 from flask import Blueprint, jsonify, request
+from flasgger import swag_from
 
+from api.docs.game_docs import game_get_specs_dict, game_search_specs_dict
 from core.models.game import Game, GAME_TYPE_MAPPING, GameType
 from core.models.enum import Collection
 from core.persist import games_repository
@@ -15,6 +17,7 @@ games_blueprint = Blueprint('games', __name__)
 
 
 @games_blueprint.route('', methods=['GET'])
+@swag_from(game_get_specs_dict)
 def get_all_games():
     # get args from request
     game_types = [GAME_TYPE_MAPPING.get(g_t, None) for g_t in request.args.getlist('type')]
@@ -65,6 +68,7 @@ def create_game():
 
 
 @games_blueprint.route('/search', methods=['GET'])
+@swag_from(game_search_specs_dict)
 def search_games():
     # get args from request
     name = request.args.get("name", None)

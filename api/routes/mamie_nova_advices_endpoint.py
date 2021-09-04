@@ -1,18 +1,22 @@
 import logging
 
 from flask import Blueprint, jsonify, request
+from flasgger import swag_from
 
 from core.models.enum import Collection
 from core.models.mamie_nova_advice import MamieNovaAdvice, MAMIE_NOVA_ADVICE_TYPE_MAPPING, MamieNovaAdviceType
 from core.persist import mamie_nova_advices_repository
-from api.admin_interface.auth import auth_required
 from core.services import search_service
+
+from api.docs.mamie_nova_advice_docs import mamie_nova_advice_get_specs_dict, mamie_nova_advice_search_specs_dict
+from api.admin_interface.auth import auth_required
 
 logger = logging.getLogger(__name__)
 
 mamie_nova_advices_blueprint = Blueprint('mamie_nova_advices', __name__)
 
 
+@swag_from(mamie_nova_advice_get_specs_dict)
 @mamie_nova_advices_blueprint.route('', methods=['GET'])
 def get_all_mamie_nova_advices():
     # get args from request
@@ -59,6 +63,7 @@ def create_mamie_nova_advice():
     return resp
 
 
+@swag_from(mamie_nova_advice_search_specs_dict)
 @mamie_nova_advices_blueprint.route('/search', methods=['GET'])
 def search_mamie_nova_advices():
     # get args from request

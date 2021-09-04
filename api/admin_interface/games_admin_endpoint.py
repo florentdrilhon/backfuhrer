@@ -1,6 +1,6 @@
 import logging
 
-from flask import Blueprint, redirect, render_template, url_for
+from flask import Blueprint, render_template
 from flask_wtf import FlaskForm
 from wtforms import SubmitField, StringField, IntegerField, SelectField, TextAreaField
 from wtforms.validators import DataRequired

@@ -1,18 +1,22 @@
 import logging
 
 from flask import Blueprint, jsonify, request
+from flasgger import swag_from
 
 from core.models.cocktail import Cocktail, COCKTAIL_TYPE_MAPPING, CocktailType
 from core.models.enum import Collection
 from core.persist import cocktails_repository
-from api.admin_interface.auth import auth_required
 from core.services import search_service
+
+from api.admin_interface.auth import auth_required
+from api.docs.cocktail_docs import cocktail_get_specs_dict, cocktail_search_specs_dict
 
 logger = logging.getLogger(__name__)
 
 cocktails_blueprint = Blueprint('cocktails', __name__)
 
 
+@swag_from(cocktail_get_specs_dict)
 @cocktails_blueprint.route('', methods=['GET'])
 def get_all_cocktails():
     cocktail_types = [COCKTAIL_TYPE_MAPPING.get(g_t, None) for g_t in request.args.getlist('type')]
@@ -59,6 +63,7 @@ def create_cocktail():
     return resp
 
 
+@swag_from(cocktail_search_specs_dict)
 @cocktails_blueprint.route('/search', methods=['GET'])
 def search_cocktails():
     # get args from request
