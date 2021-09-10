@@ -13,7 +13,7 @@ def test_name_similarity():
     for entity in good_entities:
         assert entities_similarities[entity._id] == 1.0
     for entity in bad_entities:
-        assert entities_similarities[entity._id] < 0.2
+        assert entities_similarities[entity._id] <= 0.2
 
 
 def test_search_by_name():
