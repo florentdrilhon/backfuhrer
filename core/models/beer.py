@@ -8,26 +8,12 @@ from dateutil.tz import tzutc
 
 
 class BeerType(Enum):
-    Blond = 'blond'
-    Dark = 'dark'
-    White = 'white'
+    Blond = 'Blonde'
+    Dark = 'Brune'
+    White = 'Blanche'
     Triple = 'Triple'
-    Fruity = 'fruity'
+    Fruity = 'Fruitées'
 
-
-# to get the real name to display for each type
-BEER_TYPES_NAMES = {
-    BeerType.Blond: "Blonde",
-    BeerType.Dark: "Brune",
-    BeerType.White: "Blanche",
-    BeerType.Triple: "Triple",
-    BeerType.Fruity: "Fruitée"
-}
-
-# to map a name with its value
-BEER_NAMES_TYPES = {
-    name: beer_type for beer_type, name in BEER_TYPES_NAMES.items()
-}
 
 # to map a type value with its type entity
 BEER_TYPE_MAPPING = {
@@ -36,28 +22,13 @@ BEER_TYPE_MAPPING = {
 
 
 class BeerCategory(Enum):
-    Classical = "classical"
-    Cheap = "cheap"
-    Strong = "strong"
-    Unusual = "unusual"
-    Light = 'light'
-    Other = 'other'
+    Classical = "Les classiques"
+    Cheap = "Les pas chères"
+    Strong = "Les fortes"
+    Unusual = "Les insolites"
+    Light = "Les légères"
+    Other = 'Autre'
 
-
-# each category with its real name to display (admin interface)
-BEER_CATEGORIES_NAMES = {
-    BeerCategory.Classical: "Les classiques",
-    BeerCategory.Cheap: "Les pas chères",
-    BeerCategory.Strong: "Les fortes",
-    BeerCategory.Unusual: "Les insolites",
-    BeerCategory.Light: "Les légères",
-    BeerCategory.Other: "Autre"
-}
-
-# map the real name of a category with its enum entity
-BEER_NAMES_CATEGORIES = {
-    name: beer_category for beer_category, name in BEER_CATEGORIES_NAMES.items()
-}
 
 # to map a category value with its enum entity
 BEER_CATEGORY_MAPPING = {
