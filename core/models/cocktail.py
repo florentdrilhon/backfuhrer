@@ -8,20 +8,10 @@ from dateutil.tz import tzutc
 
 
 class CocktailType(Enum):
-    Alcohol = 'alcohol'
-    Soft = 'soft'
-    Other = 'other'
+    Alcohol = 'Alcoolisé'
+    Soft = 'Mocktail'
+    Other = 'Autre'
 
-
-COCKTAIL_TYPES_NAMES = {
-    CocktailType.Alcohol: 'Alcool',
-    CocktailType.Soft: 'Mocktail',
-    CocktailType.Other: 'Autre'
-}
-
-COCKTAIL_NAMES_TYPES = {
-    name: game_type for game_type, name in COCKTAIL_TYPES_NAMES.items()
-}
 
 COCKTAIL_TYPE_MAPPING = {
     c.value: c for c in CocktailType

@@ -8,24 +8,12 @@ from dateutil.tz import tzutc
 
 
 class MamieNovaAdviceType(Enum):
-    Application = 'application'
-    Location = 'location'  # ( endroit)
-    Transport = 'transport'
-    Security = 'security'
-    Other = 'other'
+    Application = 'Application mobile'
+    Location = 'Lieux'  # ( endroit)
+    Transport = 'Transports'
+    Security = 'Sécurité'
+    Other = 'Autre'
 
-
-MAMIE_NOVA_ADVICE_TYPES_NAMES = {
-    MamieNovaAdviceType.Application: 'Application mobile',
-    MamieNovaAdviceType.Location: 'Lieu',
-    MamieNovaAdviceType.Transport: 'Transports',
-    MamieNovaAdviceType.Security: 'Sécurité',
-    MamieNovaAdviceType.Other: 'Autre'
-}
-
-MAMIE_NOVA_ADVICE_NAMES_TYPES = {
-    name: game_type for game_type, name in MAMIE_NOVA_ADVICE_TYPES_NAMES.items()
-}
 
 MAMIE_NOVA_ADVICE_TYPE_MAPPING = {
     g.value: g for g in MamieNovaAdviceType

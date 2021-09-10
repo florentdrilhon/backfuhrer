@@ -8,22 +8,11 @@ from dateutil.tz import tzutc
 
 
 class GameType(Enum):
-    Cards = 'cards'
-    Dice = 'dice'
-    MobileApplication = 'mobile_application'
-    Other = 'other'
+    Cards = 'Cartes'
+    Dice = 'Dés'
+    MobileApplication = 'Application mobile'
+    Other = 'Autre'
 
-
-GAME_TYPES_NAMES = {
-    GameType.Cards: 'Cartes',
-    GameType.Dice: 'Dés',
-    GameType.MobileApplication: 'Application mobile',
-    GameType.Other: 'Autre'
-}
-
-GAME_NAMES_TYPES = {
-    name: game_type for game_type, name in GAME_TYPES_NAMES.items()
-}
 
 GAME_TYPE_MAPPING = {
     g.value: g for g in GameType
@@ -33,7 +22,7 @@ GAME_DEFAULT_IMAGES = {
     GameType.Cards: "https://www.letribunaldunet.fr/wp-content/uploads/2018/06/alcool.jpg",
     GameType.Dice: "https://static1.magazine.ribambel.com/articles/1/20/71/@/29680-lancez-les-des-et-observez-le-resultat-v2_article_medium-1.jpg",
     GameType.MobileApplication: "https://static1.magazine.ribambel.com/articles/1/20/71/@/29680-lancez-les-des-et-observez-le-resultat-v2_article_medium-1.jpg",
-    GameType.Other : "https://www.jeux-alcool.com/wp-content/uploads/2017/03/beerPong.jpeg"
+    GameType.Other: "https://www.jeux-alcool.com/wp-content/uploads/2017/03/beerPong.jpeg"
 }
 
 

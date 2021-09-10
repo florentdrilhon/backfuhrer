@@ -5,7 +5,7 @@ from flask_wtf import FlaskForm
 
 from wtforms import SubmitField, StringField, SelectField, FormField, FieldList, TextAreaField
 from wtforms.validators import DataRequired
-from core.models.mamie_nova_advice import MAMIE_NOVA_ADVICE_NAMES_TYPES, MamieNovaAdvice, MAMIE_NOVA_ADVICE_TYPES_NAMES
+from core.models.mamie_nova_advice import MamieNovaAdvice, MamieNovaAdviceType, MAMIE_NOVA_ADVICE_TYPE_MAPPING
 from core.persist import mamie_nova_advices_repository
 from api.admin_interface.auth import auth_required
 
@@ -24,7 +24,7 @@ class MamieNovaAdviceForm(FlaskForm):
     description = TextAreaField('Description du conseil:', validators=[DataRequired()])
     links = FieldList(FormField(LinkForm), min_entries=4)
     image = StringField("Lien de l'image du mamie_nova_advice")
-    mamie_nova_advice_type = SelectField("Type du conseil:", choices=MAMIE_NOVA_ADVICE_TYPES_NAMES.values())
+    mamie_nova_advice_type = SelectField("Type du conseil:", choices=[m_t.value for m_t in MamieNovaAdviceType])
     submit = SubmitField('Enregister')
 
 
@@ -44,7 +44,7 @@ def mamie_nova_advices():
             mamie_nova_advice = MamieNovaAdvice(name=name, description=description,
                                                 links=links,
                                                 image=image,
-                                                mamie_nova_advice_type=MAMIE_NOVA_ADVICE_NAMES_TYPES[
+                                                mamie_nova_advice_type=MAMIE_NOVA_ADVICE_TYPE_MAPPING[
                                                     mamie_nova_advice_type])
             res = mamie_nova_advices_repository.create_one(mamie_nova_advice)
             # setting up the values displayed in the web page

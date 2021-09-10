@@ -5,7 +5,7 @@ from flask_wtf import FlaskForm
 
 from wtforms import SubmitField, StringField, SelectField, TextAreaField, FloatField
 from wtforms.validators import DataRequired
-from core.models.beer import BEER_NAMES_TYPES, Beer, BEER_TYPES_NAMES, BEER_CATEGORIES_NAMES, BEER_NAMES_CATEGORIES
+from core.models.beer import Beer, BeerType, BEER_TYPE_MAPPING, BeerCategory, BEER_CATEGORY_MAPPING
 from core.persist import beers_repository
 from api.admin_interface.auth import auth_required
 
@@ -20,8 +20,8 @@ class BeerForm(FlaskForm):
     price = FloatField('Prix de la bière (au litre) : ', validators=[DataRequired()])
     alcohol_percentage = FloatField("Volume d'alcool (en %)", validators=[DataRequired()])
     image = StringField("Lien de l'image de la bière")
-    beer_type = SelectField("Type de la bière:", choices=BEER_TYPES_NAMES.values())
-    beer_category = SelectField("Catégorie de la bière:", choices=BEER_CATEGORIES_NAMES.values())
+    beer_type = SelectField("Type de la bière:", choices=[b_t.value for b_t in BeerType])
+    beer_category = SelectField("Catégorie de la bière:", choices=[b_c.value for b_c in BeerCategory])
     submit = SubmitField('Enregister')
 
 
@@ -43,8 +43,8 @@ def beers():
             beer = Beer(name=name, description=description,
                         price=price,
                         alcohol_percentage=alcohol_percentage,
-                        image=image, beer_type=BEER_NAMES_TYPES[beer_type],
-                        category=BEER_NAMES_CATEGORIES[beer_category])
+                        image=image, beer_type=BEER_TYPE_MAPPING[beer_type],
+                        category=BEER_CATEGORY_MAPPING[beer_category])
             res = beers_repository.create_one(beer)
             # setting up the values displayed in the web page
             block_title = 'Niquel Miguel'

@@ -4,7 +4,7 @@ from flask import Blueprint, render_template
 from flask_wtf import FlaskForm
 from wtforms import SubmitField, StringField, IntegerField, SelectField, TextAreaField
 from wtforms.validators import DataRequired
-from core.models.game import GAME_NAMES_TYPES, Game, GAME_TYPES_NAMES
+from core.models.game import Game, GameType, GAME_TYPE_MAPPING
 from core.persist import games_repository
 from api.admin_interface.auth import auth_required
 
@@ -21,7 +21,7 @@ class GameForm(FlaskForm):
     min_number_of_players = IntegerField('Nombre minimum de joueurs', validators=[DataRequired()])
     max_number_of_players = IntegerField('Nombre maximum de joueurs', validators=[DataRequired()])
     image = StringField("Lien de l'image du jeu")
-    game_type = SelectField("Type du jeu:", choices=GAME_TYPES_NAMES.values())
+    game_type = SelectField("Type du jeu:", choices=[g_t.value for g_t in GameType])
     submit = SubmitField('Enregister')
 
 
@@ -48,7 +48,7 @@ def games():
             try:
                 game = Game(name=name, description=description, rules=rules, duration_min=duration_min,
                             number_of_players=(min_number_of_players, max_number_of_players),
-                            image=image, game_type=GAME_NAMES_TYPES[game_type])
+                            image=image, game_type=GAME_TYPE_MAPPING[game_type])
 
                 res = games_repository.create_one(game)
                 block_title = 'Niquel Miguel'
