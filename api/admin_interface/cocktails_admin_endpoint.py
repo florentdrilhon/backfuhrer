@@ -5,7 +5,7 @@ from flask_wtf import FlaskForm
 
 from wtforms import SubmitField, StringField, IntegerField, SelectField, FormField, FieldList, TextAreaField
 from wtforms.validators import DataRequired
-from core.models.cocktail import COCKTAIL_NAMES_TYPES, Cocktail, COCKTAIL_TYPES_NAMES
+from core.models.cocktail import Cocktail, CocktailType, COCKTAIL_TYPE_MAPPING
 from core.persist import cocktails_repository
 from api.admin_interface.auth import auth_required
 
@@ -27,7 +27,7 @@ class CocktailForm(FlaskForm):
     preparation_time_min = IntegerField('Estimation de la durée de préparation du cocktail (minutes):',
                                         validators=[DataRequired()])
     image = StringField("Lien de l'image du cocktail")
-    cocktail_type = SelectField("Type du cocktail:", choices=COCKTAIL_TYPES_NAMES.values())
+    cocktail_type = SelectField("Type du cocktail:", choices=[c_t.value for c_t in CocktailType])
     submit = SubmitField('Enregister')
 
 
@@ -50,7 +50,7 @@ def cocktails():
                                 recipe=recipe,
                                 ingredients=ingredients,
                                 preparation_time_min=preparation_time_min,
-                                image=image, cocktail_type=COCKTAIL_NAMES_TYPES[cocktail_type])
+                                image=image, cocktail_type=COCKTAIL_TYPE_MAPPING[cocktail_type])
             res = cocktails_repository.create_one(cocktail)
             # setting up the values displayed in the web page
             block_title = 'Niquel Miguel'
