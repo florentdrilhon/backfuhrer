@@ -12,7 +12,7 @@ class BeerType(Enum):
     Dark = 'Brune'
     White = 'Blanche'
     Triple = 'Triple'
-    Fruity = 'Fruitées'
+    Fruity = 'Fruitée'
 
 
 # to map a type value with its type entity
