@@ -63,6 +63,12 @@
                     </div>
                     <br/>
 
+                    <div class="field-container">
+                        <div class="field-name">{{ form.detailed_description.label }}</div>
+                        <div class="field-entry">{{ form.detailed_description }} </div>
+                    </div>
+                    <br/>
+
                     <div class="field-name"><h4>Liens utiles</h4></div>
                     <ul>
                         {% for nested in form.links %}
