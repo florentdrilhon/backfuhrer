@@ -27,6 +27,7 @@ class MamieNovaAdvice(JsonSchemaMixin):
     _id: UUID
     name: Optional[str]
     description: Optional[str]
+    detailed_description: Optional[str]
     image: Optional[str]
     mamie_nova_advice_type: Optional[MamieNovaAdviceType]
     links: Optional[Dict[str, str]]
@@ -37,6 +38,7 @@ class MamieNovaAdvice(JsonSchemaMixin):
                  _id: Optional[UUID] = None,
                  name: Optional[str] = None,
                  description: Optional[str] = None,
+                 detailed_description: Optional[str] = None,
                  image: Optional[str] = None,
                  mamie_nova_advice_type: Optional[MamieNovaAdviceType] = None,
                  links: Optional[Dict[str, str]] = None,
@@ -46,6 +48,7 @@ class MamieNovaAdvice(JsonSchemaMixin):
         self._id = _id or uuid4()
         self.name = name or ""
         self.description = description or ""
+        self.detailed_description = detailed_description or ""
         self.mamie_nova_advice_type = mamie_nova_advice_type or MamieNovaAdviceType.Other
         self.image = image or DEFAULT_IMAGE  # TODO
         self.links = links or {" ": " "}

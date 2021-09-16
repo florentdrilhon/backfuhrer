@@ -7,6 +7,7 @@ mamie_nova_advice_model = {"MamieNovaAdvice":
             "_id": {"type": "UUID"},
             "name": {"type": "string"},
             "description": {"type": "string"},
+            "detailed_description": {"type": "string"},
             "links": {"type": "object",
                             "properties": {"link_name": {"type": "string"}, "link": {"type": "string"}}},
             "mamie_nova_advice_type": {"type": "string", "enum": [m_t.value for m_t in MamieNovaAdviceType], },

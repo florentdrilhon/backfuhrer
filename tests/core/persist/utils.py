@@ -69,12 +69,14 @@ def new_beer(name: Optional[str] = None,
 
 def new_mamie_nova_advice(name: Optional[str] = None,
                           description: Optional[str] = None,
+                          detailed_description: Optional[str] = None,
                           image: Optional[str] = None,
                           mamie_nova_advice_type: Optional[BeerType] = None,
                           links: Optional[Dict[str, str]] = None) -> MamieNovaAdvice:
     mamie_nova_advice = MamieNovaAdvice()
     mamie_nova_advice.name = name or ascii_string()
     mamie_nova_advice.description = description or ascii_string()
+    mamie_nova_advice.detailed_description = detailed_description or ascii_string()
     mamie_nova_advice.image = image or ascii_string()
     mamie_nova_advice.mamie_nova_advice_type = mamie_nova_advice_type or one_of(MamieNovaAdviceType)
     mamie_nova_advice.links = links or {ascii_string(): ascii_string()}
