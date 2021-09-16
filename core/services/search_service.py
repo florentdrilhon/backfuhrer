@@ -3,6 +3,8 @@ from typing import List, Optional, Dict
 from difflib import SequenceMatcher
 from uuid import UUID
 
+import unidecode as unidecode
+
 from core.models.enum import Collection, Entity
 from core.persist import games_repository, beers_repository, mamie_nova_advices_repository, cocktails_repository
 
@@ -25,6 +27,17 @@ I figured out an other solution to do so
 """
 
 
+def clean_string(string: str) -> str:
+    """
+    :param string: string to clean
+    :return: a string without spaces, punctuation, special characters and accents
+    """
+    res = string.lower()
+    res = res.replace(" ", "")
+    res = unidecode.unidecode(res)
+    return res
+
+
 def name_similarity(searched_name: str, entities: List[Entity]) -> Dict[UUID, float]:
     """
     :param searched_name: str provided by the query to compare with entities
@@ -34,15 +47,15 @@ def name_similarity(searched_name: str, entities: List[Entity]) -> Dict[UUID, fl
     """
     res = {}
     for entity in entities:
-        name = entity.name.lower()
-        similarity = SequenceMatcher(None, name, searched_name.lower()).ratio()
+        name = clean_string(entity.name)
+        similarity = SequenceMatcher(None, name, clean_string(searched_name)).ratio()
         res[entity._id] = similarity
-    return {x: y for x, y in sorted(res.items(), key=lambda t: t[1])}
+    return {x: y for x, y in sorted(res.items(), key=lambda t: t[1], reverse=True)}
 
 
 def search_by_name(searched_name: str,
                    collection: Collection,
-                   similarity_threshold: Optional[float] = 0.65) -> List[Entity]:
+                   similarity_threshold: Optional[float] = 0.35) -> List[Entity]:
     """
     :param searched_name: name from the search query to look for into the entities
     :param collection: the collection from which get the similar entities
