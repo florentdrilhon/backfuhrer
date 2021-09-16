@@ -48,6 +48,7 @@ def new_cocktail(name: Optional[str] = None,
 
 def new_beer(name: Optional[str] = None,
              description: Optional[str] = None,
+             detailed_description: Optional[str] = None,
              price: Optional[float] = None,
              alcohol_percentage: Optional[float] = None,
              category: Optional[BeerCategory] = None,
@@ -56,6 +57,7 @@ def new_beer(name: Optional[str] = None,
     beer = Beer()
     beer.name = name or ascii_string()
     beer.description = description or ascii_string()
+    beer.detailed_description = detailed_description or ascii_string()
     beer.price = price or random_number(10, 60)
     beer.alcohol_percentage = alcohol_percentage or random_number(0, 60)
     beer.image = image or ascii_string()

@@ -6,6 +6,7 @@ beer_model = {"Beer":
         "properties": {
             "name": {"type": "string"},
             "description": {"type": "string"},
+            "detailed_description": {"type": "string"},
             "price": {"type": "integer"},
             "alcohol_percentage": {"type": "integer"},
             "beer_type": {"type": "string", "enum": [g_t.value for g_t in BeerType], },
