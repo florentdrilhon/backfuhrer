@@ -15,7 +15,7 @@ admin_games_blueprint = Blueprint('admin/games/', __name__, template_folder='cli
 
 class GameForm(FlaskForm):
     name = StringField('Nom du jeu:', validators=[DataRequired()])
-    description = TextAreaField('Description du jeu:', validators=[DataRequired()])
+    description = StringField('Courte description du jeu:', validators=[DataRequired()])
     rules = TextAreaField('Règles du jeu:', validators=[DataRequired()])
     duration_min = IntegerField('Estimation de la durée du jeu (minutes):', validators=[DataRequired()])
     min_number_of_players = IntegerField('Nombre minimum de joueurs', validators=[DataRequired()])

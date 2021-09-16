@@ -21,7 +21,7 @@ class IngredientForm(FlaskForm):
 
 class CocktailForm(FlaskForm):
     name = StringField('Nom du cocktail:', validators=[DataRequired()])
-    description = TextAreaField('Description du cocktail:', validators=[DataRequired()])
+    description = StringField('Courte description du cocktail:', validators=[DataRequired()])
     recipe = FieldList(StringField('Etape:'), min_entries=6)
     ingredients = FieldList(FormField(IngredientForm), min_entries=6)
     preparation_time_min = IntegerField('Estimation de la durée de préparation du cocktail (minutes):',
