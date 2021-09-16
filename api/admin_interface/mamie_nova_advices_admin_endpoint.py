@@ -21,7 +21,8 @@ class LinkForm(FlaskForm):
 
 class MamieNovaAdviceForm(FlaskForm):
     name = StringField('Nom du conseil:', validators=[DataRequired()])
-    description = TextAreaField('Description du conseil:', validators=[DataRequired()])
+    description = StringField('Courte cescription du conseil:', validators=[DataRequired()])
+    detailed_description = TextAreaField('Description détaillée du conseil:', validators=[DataRequired()])
     links = FieldList(FormField(LinkForm), min_entries=4)
     image = StringField("Lien de l'image du mamie_nova_advice")
     mamie_nova_advice_type = SelectField("Type du conseil:", choices=[m_t.value for m_t in MamieNovaAdviceType])
@@ -38,10 +39,12 @@ def mamie_nova_advices():
             name = form.name.data
             logger.warning(f'Trying to insert mamie_nova_advice {name} in DB')
             description = form.description.data
+            detailed_description = form.detailed_description.data
             links = {f['link_name']: f['link'] for f in form.links.data}
             image = form.image.data
             mamie_nova_advice_type = form.mamie_nova_advice_type.data
             mamie_nova_advice = MamieNovaAdvice(name=name, description=description,
+                                                detailed_description=detailed_description,
                                                 links=links,
                                                 image=image,
                                                 mamie_nova_advice_type=MAMIE_NOVA_ADVICE_TYPE_MAPPING[

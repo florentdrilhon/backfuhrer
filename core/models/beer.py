@@ -43,6 +43,7 @@ class Beer(JsonSchemaMixin):
     _id: UUID
     name: Optional[str]
     description: Optional[str]
+    detailed_description: Optional[str]
     price: Optional[float]
     alcohol_percentage: Optional[float]
     image: Optional[str]
@@ -55,6 +56,7 @@ class Beer(JsonSchemaMixin):
                  _id: Optional[UUID] = None,
                  name: Optional[str] = None,
                  description: Optional[str] = None,
+                 detailed_description: Optional[str]=None,
                  price: Optional[float] = None,
                  alcohol_percentage: Optional[float] = None,
                  image: Optional[str] = None,
@@ -66,6 +68,7 @@ class Beer(JsonSchemaMixin):
         self._id = _id or uuid4()
         self.name = name or ""
         self.description = description or ""
+        self.detailed_description = detailed_description or ""
         self.price = price or 0.0
         self.alcohol_percentage = alcohol_percentage or 0.0
         self.beer_type = beer_type or BeerType.Blond
